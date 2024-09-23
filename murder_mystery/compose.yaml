@@ -2,7 +2,7 @@ version: '3'
 services:
   db:
     image: mysql:9.0
-    container_name: murder_myster_db
+    container_name: murder_mystery_db
     restart: always
     volumes:
       - data:/var/lib/mysql
@@ -22,7 +22,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    container_name: murder_myster_backend
+    container_name: murder_mystery_backend
     command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
     restart: always
     volumes:
