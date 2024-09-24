@@ -23,7 +23,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: murder_mystery_backend
-    command: sh -c "python3 manage.py migrate --noinput && python3 manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"
+    command: sh -c "/app/starter_script.sh"
     restart: always
     volumes:
       - .:/app
