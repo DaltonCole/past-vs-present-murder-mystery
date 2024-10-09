@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'teams.apps.TeamsConfig',
     'video_clues.apps.VideoCluesConfig',
     'text_clues.apps.TextCluesConfig',
+    'bonus_points.apps.BonusPointsConfig',
 
     # Defaults
     'django.contrib.admin',
