@@ -35,6 +35,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'characters.apps.CharactersConfig',
     'teams.apps.TeamsConfig',
+    'video_clues.apps.VideoCluesConfig',
 
     # Defaults
     'django.contrib.admin',
