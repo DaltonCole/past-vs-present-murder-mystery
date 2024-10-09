@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'characters.apps.CharactersConfig',
     'teams.apps.TeamsConfig',
     'video_clues.apps.VideoCluesConfig',
+    'text_clues.apps.TextCluesConfig',
 
     # Defaults
     'django.contrib.admin',
