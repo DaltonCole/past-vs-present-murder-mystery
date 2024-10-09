@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'characters.apps.CharactersConfig',
+    'teams.apps.TeamsConfig',
 
     # Defaults
     'django.contrib.admin',
