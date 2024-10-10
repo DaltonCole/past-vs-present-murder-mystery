@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Console{% endblock %}
+
+{% block content %}
+<!-- Report action performed -->
+{% if action %}
+<p>{{action}}</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+<p>Hi {{ user.username }}!</p>
+<p>{{ matching_character.real_name }}</p>
+<!--
+-->
+<!-- BEGIN Perform Actions-->
+<form action="{% url 'admin-pages:console' %}" method=""GET>
+    <!-- Create Teams-->
+    <button type="submit" name="action" value="team-creation">Create Teams</button>
+</form>
+
+
+
+<!-- END Perform Actions-->
+
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+{% endif %}
+{% endblock %}

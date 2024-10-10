@@ -22,6 +22,7 @@ urlpatterns = [
     #path("", include("characters.urls")),
     path("", include('pages.urls')),
     path("characters/", include("characters.urls")),
+    path("admin/", include('admin_pages.urls')),
     path("admin/", admin.site.urls),
     path('accounts/', include('allauth.urls')), # Used for character creation
     #path('accounts/', include('characters.urls')), # Used for character creation
