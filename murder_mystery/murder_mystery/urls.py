@@ -20,10 +20,10 @@ from django.views.generic.base import TemplateView
 
 urlpatterns = [
     #path("", include("characters.urls")),
-    path("", TemplateView.as_view(template_name="home.html"), name="home"), # TODO, will need the name after I update
+    path("", include('pages.urls')),
     path("characters/", include("characters.urls")),
     path("admin/", admin.site.urls),
     path('accounts/', include('allauth.urls')), # Used for character creation
-    path('accounts/', include('characters.urls')), # Used for character creation
+    #path('accounts/', include('characters.urls')), # Used for character creation
     path('accounts/', include('django.contrib.auth.urls')), # Used for character creation
 ]

@@ -57,9 +57,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 3rd Party
-    'allauth.account.middleware.AccountMiddleware',
-
     # Defaults
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -68,6 +65,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 3rd Party
+    'allauth.account.middleware.AccountMiddleware',
+
+    # Local
 ]
 
 ROOT_URLCONF = 'murder_mystery.urls'

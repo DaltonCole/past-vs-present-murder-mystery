@@ -4,7 +4,10 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-Hi {{ user.username }}!
+<p>Hi {{ user.username }}!</p>
+<p>{{ matching_character.real_name }}</p>
+<!--
+-->
 <form action="{% url 'logout' %}" method="post">
   {% csrf_token %}
   <button type="submit">Log Out</button>
