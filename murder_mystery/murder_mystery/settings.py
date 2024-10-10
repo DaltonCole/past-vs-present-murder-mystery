@@ -33,12 +33,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Local
     'characters.apps.CharactersConfig',
     'teams.apps.TeamsConfig',
     'video_clues.apps.VideoCluesConfig',
     'text_clues.apps.TextCluesConfig',
     'bonus_points.apps.BonusPointsConfig',
     'solutions.apps.SolutionsConfig',
+
+    # 3rd Party
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 
     # Defaults
     'django.contrib.admin',
@@ -51,6 +57,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # 3rd Party
+    'allauth.account.middleware.AccountMiddleware',
+
+    # Defaults
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -65,7 +75,7 @@ ROOT_URLCONF = 'murder_mystery.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -138,3 +148,24 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Login page
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'home'
+
+# User settings
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+#ACCOUNT_UNIQUE_EMAIL = True

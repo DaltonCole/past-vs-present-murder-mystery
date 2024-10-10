@@ -1,8 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Character(models.Model):
-    password = models.CharField(('password'), max_length=128)
+    username = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
     real_name = models.CharField(max_length=32)
     character_name = models.CharField(max_length=32)
 
@@ -18,4 +22,10 @@ class Character(models.Model):
     descriptor2 = models.CharField(max_length=32)
     descriptor3 = models.CharField(max_length=32)
     solo = models.BooleanField()
-    prefered_partner = models.CharField(max_length=32)
+    prefered_partner = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name='I_choose_you_to_be_my_partner',
+    )
