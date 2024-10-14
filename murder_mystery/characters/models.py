@@ -22,7 +22,7 @@ class Character(models.Model):
     descriptor2 = models.CharField(max_length=32)
     descriptor3 = models.CharField(max_length=32)
     solo = models.BooleanField()
-    prefered_partner = models.ForeignKey(
+    preferred_partner = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         blank=True,

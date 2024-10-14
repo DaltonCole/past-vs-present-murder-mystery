@@ -15,6 +15,9 @@
 -->
 <!-- BEGIN Perform Actions-->
 <form action="{% url 'admin-pages:console' %}" method=""GET>
+    <form action="{% url 'admin-pages:console' %}" method=""GET>
+    <!-- Start Game -->
+    <button type="submit" name="action" value="start-game">Start Game</button>
     <!-- Create Teams-->
     <button type="submit" name="action" value="team-creation">Create Teams</button>
 </form>

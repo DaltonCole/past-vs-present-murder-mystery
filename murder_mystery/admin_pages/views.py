@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
 
+from admin_pages.scripts.start_game import start_game
+
 
 # Create your views here.
 @staff_member_required
@@ -8,6 +10,10 @@ def console(request):
     context = {}
 
     if 'action' in request.GET.keys():
+        if 'start-game' == request.GET['action']:
+            context['action'] = 'Game has been started'
+            context['action'] = start_game()
+
         if 'team-creation' == request.GET['action']:
             # TODO: make f-string include number of teams created and what
             # teams are. Include solo team statistics
