@@ -16,4 +16,4 @@ jobs:
       - name: "Build container"
         run: cd murder_mystery && docker compose -f test-compose.yaml build
       - name: "Run Tests"
-        run: docker compose run --rm murder_mystery_backend_test sh -c "python manage.py test"
+        run: docker run --rm murder_mystery-test-backend sh -c "python manage.py test"
