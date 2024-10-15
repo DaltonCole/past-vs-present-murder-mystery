@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: "ls"
+        run: ls
       - name: "Set up environment"
-        run: cd murder_mystery && docker compose -f compose.yml up test-backend -d --wait
+        run: docker compose -f murder_mystery/compose.yml up test-backend -d --wait
       - name: "Run Tests"
         run: docker exec -it murder_mystery_backend_test python manage.py test
