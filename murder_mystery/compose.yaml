@@ -40,8 +40,6 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: murder_mystery_backend_test
-    command: sh -c "/app/starter_test_script.sh"
-    volumes:
-      - .:/app
+    restart: always
 volumes:
   data:
