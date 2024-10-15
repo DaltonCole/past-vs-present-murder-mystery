@@ -16,3 +16,7 @@
 ## Docker
 
 * Restart a single container (ex backend): `docker-compose restart backend`
+
+### Trouble-shooting
+
+* If you run into a "Error response from daemon: network * not found" error try: `docker-compose up --force-recreate`
