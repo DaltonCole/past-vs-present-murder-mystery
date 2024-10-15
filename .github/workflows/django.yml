@@ -16,6 +16,6 @@ jobs:
       - name: "ls"
         run: ls
       - name: "Set up environment"
-        run: docker compose -f murder_mystery/compose.yml up test-backend -d --wait
+        run: cd murder_mystery && docker compose -f compose.yaml up test-backend -d --wait
       - name: "Run Tests"
         run: docker exec -it murder_mystery_backend_test python manage.py test
