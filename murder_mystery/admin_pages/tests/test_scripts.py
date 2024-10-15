@@ -4,23 +4,11 @@ import logging
 
 from characters.models import Character
 from teams.models import Team
-
-from .scripts.make_teams import make_teams
+from admin_pages.scripts.make_teams import make_teams
+from .helpers import save_all, make_default_character
 
 # Create your tests here.
 logging.basicConfig(level=logging.INFO)
-
-# --- Scripts --- #
-def save_all(model_objects):
-    for obj in model_objects:
-        obj.save()
-
-def make_default_character(user):
-    return Character(
-        username=user,
-        past_or_future='p',
-        solo=False
-    )
 
 
 class MakeTeamsTests(TestCase):
