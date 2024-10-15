@@ -1,26 +1,19 @@
 name: Django CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+  push:
+    branches:
+      - "*"
 
 jobs:
-  build:
-
+  # Integration Test
+  tests:
+    name: "Integration Test"
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-
     steps:
-      # Check out the repository
       - uses: actions/checkout@v4
-    
-      # Run Docker Compose Action
-      - uses: adambirds/docker-compose-action@v1.5.0
-        with:
-          compose-file: "murder_mystery/compose.yml"
-          up-flags: "--build"
-          test-container: "test-backend"
-          test-command: "python manage.py test"
+      - name: "Build container"
+        run: cd murder_mystery && docker compose -f test-compose.yaml build
+      - name: "Run Tests"
+        run: docker run --rm murder_mystery-test-backend sh -c "python manage.py test"

@@ -34,14 +34,5 @@ services:
     depends_on:
       db:
           condition: service_healthy
-
-  test-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: murder_mystery_backend_test
-    command: sh -c "/app/starter_test_script.sh"
-    volumes:
-      - .:/app
 volumes:
   data:
