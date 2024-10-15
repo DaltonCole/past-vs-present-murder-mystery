@@ -20,7 +20,7 @@ class ViewsTests(TestCase):
         # TODO
         response = self.client.get(reverse('admin-pages:console'), {'action': 'start-game'}, follow=True)
         # Check status code
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, 200)
 
     def test_console_get_team_creation(self):
         users, chars = make_n_users_and_characters(11)
