@@ -2,22 +2,25 @@ name: Django CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ master ]
+    branches: [ "main" ]
 
 jobs:
   build:
 
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+
     steps:
       # Check out the repository
       - uses: actions/checkout@v4
-
+    
       # Run Docker Compose Action
       - uses: adambirds/docker-compose-action@v1.5.0
         with:
-          compose-file: "./murder_mystery/docker-compose.yml"
+          compose-file: "murder_mystery/compose.yml"
           up-flags: "--build"
-          down-flags: "--volumes"
           test-container: "test-backend"
           test-command: "python manage.py test"
