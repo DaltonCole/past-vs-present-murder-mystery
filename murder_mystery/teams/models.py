@@ -32,6 +32,11 @@ class TeamToClue(models.Model):
     location_hints = models.SmallIntegerField(
             default=False,
             )
+    # Number of attempts this team has had at submitting the correct solution
+    #   Tries will be point deductions
+    tries = models.SmallIntegerField(
+            default=0,
+            )
     video_clue = models.ForeignKey(
            VideoClue,
            on_delete=models.CASCADE,
