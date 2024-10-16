@@ -1,0 +1,12 @@
+[
+    {
+        "model": "video_clues.VideoClue",
+        "pk": 0,
+        "fields": {
+            "video_url": "test",
+            "location_hint1": "test",
+            "location_hint2": "test",
+            "location_hint3": "test"
+        }
+    }
+]
