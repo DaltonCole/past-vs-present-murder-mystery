@@ -6,13 +6,13 @@ from .forms import CharacterForm
 from .models import Character
 
 
-@login_required(login_url='accounts/signup')
+@login_required(login_url='/accounts/signup')
 def creation(request):
     context = {}
 
     # If this user already has a character, go back to home
     if len(Character.objects.filter(username=request.user.id)) != 0:
-        return redirect('home')
+        return redirect('pages:home')
 
     # Create a form
     form = CharacterForm(
@@ -26,7 +26,7 @@ def creation(request):
         character = form.save(commit=False)
         character.username = User.objects.get(id=request.user.id)
         character.save()
-        return redirect('home')
+        return redirect('pages:home')
 
     context['form'] = form
 
