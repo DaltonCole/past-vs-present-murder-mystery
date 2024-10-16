@@ -10,12 +10,12 @@ from admin_pages.scripts.make_teams import make_teams
 def console(request):
     context = {}
 
-    if 'action' in request.GET.keys():
-        if 'start-game' == request.GET['action']:
+    if 'action' in request.POST.keys():
+        if 'start-game' == request.POST['action']:
             context['action'] = 'Game has been started'
             context['action'] = start_game()
 
-        if 'team-creation' == request.GET['action']:
+        if 'team-creation' == request.POST['action']:
             # TODO: make f-string include number of teams created and what
             # teams are. Include solo team statistics
             context['action'] = 'Teams were created'

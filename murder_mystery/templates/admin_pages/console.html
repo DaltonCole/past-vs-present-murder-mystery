@@ -14,8 +14,8 @@
 <!--
 -->
 <!-- BEGIN Perform Actions-->
-<form action="{% url 'admin-pages:console' %}" method=""GET>
-    <form action="{% url 'admin-pages:console' %}" method=""GET>
+<form action="{% url 'admin-pages:console' %}" method="POST">
+    {% csrf_token %}
     <!-- Start Game -->
     <button type="submit" name="action" value="start-game">Start Game</button>
     <!-- Create Teams-->

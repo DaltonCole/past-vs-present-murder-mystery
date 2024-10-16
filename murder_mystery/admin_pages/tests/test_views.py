@@ -18,7 +18,7 @@ class ViewsTests(TestCase):
 
     def test_start_game(self):
         # TODO
-        response = self.client.get(reverse('admin-pages:console'), {'action': 'start-game'}, follow=True)
+        response = self.client.post(reverse('admin-pages:console'), {'action': 'start-game'}, follow=True)
         # Check status code
         self.assertEqual(response.status_code, 200)
 
@@ -28,7 +28,7 @@ class ViewsTests(TestCase):
         save_all(chars)
 
         with self.assertLogs(level='INFO') as lc:
-            response = self.client.get(reverse('admin-pages:console'), {'action': 'team-creation'}, follow=True)
+            response = self.client.post(reverse('admin-pages:console'), {'action': 'team-creation'}, follow=True)
             # Check status code
             self.assertEqual(response.status_code, 200)
 
