@@ -1,6 +1,6 @@
 python3 manage.py makemigrations
 python3 manage.py migrate --noinput
-python3 manage.py loaddata fixture
+python3 manage.py loaddata fixtures/*.json
 python3 manage.py createcachetable
 
 if [ "$DJANGO_SUPERUSER_USERNAME" ]

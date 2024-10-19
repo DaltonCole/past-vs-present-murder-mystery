@@ -1,5 +1,7 @@
 from django.db import models
 from characters.models import Character
+from video_clues.models import VideoClue
+from text_clues.models import TextClue
 
 # Create your models here.
 class Team(models.Model):
@@ -17,3 +19,36 @@ class Team(models.Model):
         null=True,
         blank=True,
     )
+
+    def __str__(self):
+        return f'Team({self.past_character.username.username if self.past_character else None}, {self.future_character.username.username if self.future_character else None})'
+
+class TeamToClue(models.Model):
+    team = models.ForeignKey(
+            Team,
+            on_delete=models.CASCADE,
+            )
+    order = models.SmallIntegerField()
+    found = models.BooleanField(
+            default=False,
+            )
+    location_hints = models.SmallIntegerField(
+            default=0,
+            )
+    # Number of attempts this team has had at submitting the correct solution
+    #   Tries will be point deductions
+    tries = models.SmallIntegerField(
+            default=0,
+            )
+    video_clue = models.ForeignKey(
+           VideoClue,
+           on_delete=models.CASCADE,
+           blank=True,
+           null=True,
+            )
+    text_clue = models.ForeignKey(
+           TextClue,
+           on_delete=models.CASCADE,
+           blank=True,
+           null=True,
+            )

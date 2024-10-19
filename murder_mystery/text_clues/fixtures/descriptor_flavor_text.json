@@ -1,9 +1,0 @@
-[
-    {
-        "model": "text_clues.DescriptorFlavorText",
-        "pk": 0,
-        "fields": {
-            "flavor_text": "They're a {description} good fellow!"
-        }
-    }
-]

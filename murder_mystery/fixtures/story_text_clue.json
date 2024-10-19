@@ -1,0 +1,17 @@
+[
+    {
+        "model": "text_clues.StoryTextClue",
+        "pk": 0,
+        "fields": {
+            "clue": "test"
+        }
+    },
+    {
+        "model": "text_clues.StoryTextClue",
+        "pk": 1,
+        "fields": {
+            "clue": "test"
+        }
+    }
+
+]
