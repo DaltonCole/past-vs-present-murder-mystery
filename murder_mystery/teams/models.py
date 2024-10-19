@@ -20,6 +20,9 @@ class Team(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        return f'Team({self.past_character.username.username if self.past_character else None}, {self.future_character.username.username if self.future_character else None})'
+
 class TeamToClue(models.Model):
     team = models.ForeignKey(
             Team,
@@ -30,7 +33,7 @@ class TeamToClue(models.Model):
             default=False,
             )
     location_hints = models.SmallIntegerField(
-            default=False,
+            default=0,
             )
     # Number of attempts this team has had at submitting the correct solution
     #   Tries will be point deductions
