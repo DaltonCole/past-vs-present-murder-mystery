@@ -2,6 +2,9 @@ from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from teams.models import Team
+from admin_pages.scripts.start_game import start_game
+
 from .forms import CharacterForm
 from .models import Character
 
@@ -26,6 +29,10 @@ def creation(request):
         character = form.save(commit=False)
         character.username = User.objects.get(id=request.user.id)
         character.save()
+        # If game has already started, give this character a team + clues
+        # TODO: Add unittest for this
+        if len(Team.objects.all()) > 0:
+            start_game()
         return redirect('pages:home')
 
     context['form'] = form
