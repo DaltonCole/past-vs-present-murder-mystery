@@ -15,7 +15,7 @@ from text_clues.models import TextClue, StoryTextClue, OccupationFlavorText, Des
 logger = logging.getLogger(__name__)
 
 
-def assign_clues_to_teams() -> Dict[Tuple[str, str], List[TeamToClue]]:
+def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
     '''Assign every clue to every team
 
     Every team will be assigned every clue. Teams already with any existing clues will
@@ -27,7 +27,7 @@ def assign_clues_to_teams() -> Dict[Tuple[str, str], List[TeamToClue]]:
     Returns:
         Dict mapping teams to the clues that were added in the following format:
         {
-            ('past team member', 'future team member'): [Clue],
+            Team: [Clue],
         }
 
     '''
@@ -79,10 +79,9 @@ def assign_clues_to_teams() -> Dict[Tuple[str, str], List[TeamToClue]]:
             team_to_clue.save()
 
             # Add clue to team_to_clue dict
-            team_chars = (team.past_character, team.future_character)
-            if team_chars not in clues_to_team:
-                clues_to_team[team_chars] = []
-            clues_to_team[team_chars].append(team_to_clue)
+            if team not in clues_to_team:
+                clues_to_team[team] = []
+            clues_to_team[team].append(team_to_clue)
 
     return clues_to_team
 
