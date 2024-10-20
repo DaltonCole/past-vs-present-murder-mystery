@@ -6,6 +6,9 @@ class BonusPoint(models.Model):
     amount = models.SmallIntegerField()
     reason = models.TextField()
 
+    def __str__(self):
+        return f'({self.amount}) {self.reason}'
+
 
 class TeamToBonusPoint(models.Model):
     team = models.ForeignKey(

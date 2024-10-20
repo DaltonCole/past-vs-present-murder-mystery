@@ -1,0 +1,34 @@
+[
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 0,
+        "fields": {
+            "amount": 50,
+            "reason": "For capturing that horrible Giraffe!"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 1,
+        "fields": {
+            "amount": 50,
+            "reason": "For capturing that slimy Octopus!"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 2,
+        "fields": {
+            "amount": 50,
+            "reason": "For capturing that terribly cool Penguin!"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 3,
+        "fields": {
+            "amount": 50,
+            "reason": "For capturing that horrendous Elephant!"
+        }
+    }
+]
