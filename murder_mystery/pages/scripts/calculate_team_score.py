@@ -1,7 +1,6 @@
 import logging
 from typing import List, Tuple
 
-from bonus_points.models import BonusPoint, TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from teams.models import Team
 from teams.scripts.get_team_clues_in_order import get_team_clues_in_order
