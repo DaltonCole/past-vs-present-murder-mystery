@@ -9,6 +9,7 @@ from text_clues.models import TextClue, StoryTextClue
 from admin_pages.scripts.assign_clues_to_teams import assign_clues_to_teams, team_has_story_text_clue
 from admin_pages.scripts.make_teams import make_teams
 from admin_pages.scripts.make_text_clue import make_text_clue
+from admin_pages.scripts.start_game import start_game
 from .helpers import save_all, make_default_character, make_n_users_and_characters
 
 # Create your tests here.
@@ -25,6 +26,71 @@ class MakeTeams(TestCase):
             save_all(self.chars)
             make_teams()
             self.assertEqual(4, len(Team.objects.all()))
+
+class TeamToClueEndState(TestCase):
+    def check_team_to_clue_end_state(self):
+        '''Confirm the end state of TeamToClue
+        The following checks are performed:
+            1) Number of teams, video clues, text clues, and team to clue are greater than 0
+            2) There is a mapping from every team to every video + text clue
+            3) TeamToClue order for each team goes from 1 to num clues
+        '''
+        num_video_clues = len(VideoClue.objects.all())
+        num_text_clues = len(StoryTextClue.objects.all())
+        self.assertGreater(len(Team.objects.all()), 0)
+        self.assertGreater(num_video_clues, 0)
+        self.assertGreater(num_text_clues, 0)
+        self.assertGreater(len(TeamToClue.objects.all()), 0)
+
+        def check_team_to_clue_defaults(team_to_clue, video_clue: bool = False):
+            '''Make sure TeamToClue populates the correct default values'''
+            self.assertEqual(False, team_to_clue.found)
+            self.assertEqual(0, team_to_clue.location_hints)
+            self.assertEqual(0, team_to_clue.tries)
+
+            if video_clue:
+                self.assertIsNone(team_to_clue.text_clue)
+                self.assertIsNotNone(team_to_clue.video_clue)
+            else:
+                self.assertIsNone(team_to_clue.video_clue)
+                self.assertIsNotNone(team_to_clue.text_clue)
+
+        for team in Team.objects.all():
+            check_order = set()
+            # Make sure every team has every video clue
+            for video_clue in VideoClue.objects.all():
+                team_to_video_clue = TeamToClue.objects.get(team=team, video_clue=video_clue)
+                self.assertNotIn(team_to_video_clue.order, check_order)
+                check_order.add(team_to_video_clue.order)
+                check_team_to_clue_defaults(team_to_video_clue, video_clue=True)
+            # Make sure every team has every text clue
+            for story_text_clue in StoryTextClue.objects.all():
+                with self.assertNoLogs(level='WARNING') as _:
+                    team_to_text_clue = team_has_story_text_clue(team, story_text_clue)
+                    self.assertIsNotNone(team_to_text_clue)
+                self.assertNotIn(team_to_text_clue.order, check_order)
+                check_order.add(team_to_text_clue.order)
+                check_team_to_clue_defaults(team_to_text_clue, video_clue=False)
+            # Make sure order is from 1-num clues
+            num_clues = num_video_clues + num_text_clues
+            self.assertEqual(num_clues, len(check_order))
+            for i in range(1, num_clues + 1):
+                self.assertIn(i, check_order)
+            # Make sure video + text clue order is alternating
+            team_clues = TeamToClue.objects.all().filter(team=team)
+            video_clues_order = []
+            text_clues_order = []
+            for team_clue in team_clues:
+                if team_clue.video_clue is not None:
+                    video_clues_order.append(team_clue.order)
+                else:
+                    text_clues_order.append(team_clue.order)
+            sorted(video_clues_order)
+            sorted(text_clues_order)
+            iter = zip(video_clues_order, text_clues_order) if 1 in video_clues_order \
+                    else zip(text_clues_order, video_clues_order)
+            for clue1, clue2 in iter:
+                self.assertEqual(clue1+1, clue2, f'Clue types are not alternating. Video clue order: {video_clues_order}, text clue order: {text_clues_order}')
 
 
 class MakeTextClue(MakeTeams):
@@ -120,76 +186,12 @@ class TeamHasStoryTextClueTests(MakeTeams):
         self.assertIsNone(team_has_story_text_clue(self.team, self.story_clue))
 
 
-class AssignCluesToTeamsTests(MakeTeams):
+class AssignCluesToTeamsTests(MakeTeams, TeamToClueEndState):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
                 'fixtures/story_text_clue.json',
                 'fixtures/video_clues.json',
                 ]
-
-    def check_team_to_clue_end_state(self):
-        '''Confirm the end state of TeamToClue
-        The following checks are performed:
-            1) Number of teams, video clues, text clues, and team to clue are greater than 0
-            2) There is a mapping from every team to every video + text clue
-            3) TeamToClue order for each team goes from 1 to num clues
-        '''
-        num_video_clues = len(VideoClue.objects.all())
-        num_text_clues = len(StoryTextClue.objects.all())
-        self.assertGreater(len(Team.objects.all()), 0)
-        self.assertGreater(num_video_clues, 0)
-        self.assertGreater(num_text_clues, 0)
-        self.assertGreater(len(TeamToClue.objects.all()), 0)
-
-        def check_team_to_clue_defaults(team_to_clue, video_clue: bool = False):
-            '''Make sure TeamToClue populates the correct default values'''
-            self.assertEqual(False, team_to_clue.found)
-            self.assertEqual(0, team_to_clue.location_hints)
-            self.assertEqual(0, team_to_clue.tries)
-
-            if video_clue:
-                self.assertIsNone(team_to_clue.text_clue)
-                self.assertIsNotNone(team_to_clue.video_clue)
-            else:
-                self.assertIsNone(team_to_clue.video_clue)
-                self.assertIsNotNone(team_to_clue.text_clue)
-
-        for team in Team.objects.all():
-            check_order = set()
-            # Make sure every team has every video clue
-            for video_clue in VideoClue.objects.all():
-                team_to_video_clue = TeamToClue.objects.get(team=team, video_clue=video_clue)
-                self.assertNotIn(team_to_video_clue.order, check_order)
-                check_order.add(team_to_video_clue.order)
-                check_team_to_clue_defaults(team_to_video_clue, video_clue=True)
-            # Make sure every team has every text clue
-            for story_text_clue in StoryTextClue.objects.all():
-                with self.assertNoLogs(level='WARNING') as _:
-                    team_to_text_clue = team_has_story_text_clue(team, story_text_clue)
-                    self.assertIsNotNone(team_to_text_clue)
-                self.assertNotIn(team_to_text_clue.order, check_order)
-                check_order.add(team_to_text_clue.order)
-                check_team_to_clue_defaults(team_to_text_clue, video_clue=False)
-            # Make sure order is from 1-num clues
-            num_clues = num_video_clues + num_text_clues
-            self.assertEqual(num_clues, len(check_order))
-            for i in range(1, num_clues + 1):
-                self.assertIn(i, check_order)
-            # Make sure video + text clue order is alternating
-            team_clues = TeamToClue.objects.all().filter(team=team)
-            video_clues_order = []
-            text_clues_order = []
-            for team_clue in team_clues:
-                if team_clue.video_clue is not None:
-                    video_clues_order.append(team_clue.order)
-                else:
-                    text_clues_order.append(team_clue.order)
-            sorted(video_clues_order)
-            sorted(text_clues_order)
-            iter = zip(video_clues_order, text_clues_order) if 1 in video_clues_order \
-                    else zip(text_clues_order, video_clues_order)
-            for clue1, clue2 in iter:
-                self.assertEqual(clue1+1, clue2, f'Clue types are not alternating. Video clue order: {video_clues_order}, text clue order: {text_clues_order}')
 
     def test_add_inital_team_to_clues(self):
         '''Test first call to assign_clues_to_teams
@@ -409,3 +411,87 @@ class MakeTeamsTests(TestCase):
             teams_created
         )
 
+class StartGameTests(TeamToClueEndState):
+    fixtures = ['fixtures/descriptor_flavor_text.json',
+                'fixtures/occupation_flavor_text.json',
+                'fixtures/story_text_clue.json',
+                'fixtures/video_clues.json',
+                ]
+
+    def test_inital_start_game_small(self):
+        '''Test calling start_play() once with only 3 players (2 teams)'''
+        with self.assertLogs(level='INFO') as lc:
+            self.users, self.chars = make_n_users_and_characters(3)
+            save_all(self.users)
+            save_all(self.chars)
+            start_game()
+            # Start game logs
+            self.assertIn('Starting Game', '\t'.join(lc.output))
+            self.assertIn("The following were added by start_name(): {'teams': {'solo': 1, 'duo': 1}, 'team_to_clues': {", '\t'.join(lc.output))
+            # Team checks
+            self.assertEqual(len(Team.objects.all()), 2)
+            # Team to clue checks
+            self.check_team_to_clue_end_state()
+
+    def test_inital_start_game_med(self):
+        '''Test calling start_play() once with 21 players (11 teams)'''
+        with self.assertLogs(level='INFO') as lc:
+            self.users, self.chars = make_n_users_and_characters(21)
+            save_all(self.users)
+            save_all(self.chars)
+            start_game()
+            # Start game logs
+            self.assertIn('Starting Game', '\t'.join(lc.output))
+            self.assertIn("The following were added by start_name(): {'teams': {'solo': 1, 'duo': 10}, 'team_to_clues': {", '\t'.join(lc.output))
+            # Team checks
+            self.assertEqual(len(Team.objects.all()), 11)
+            # Team to clue checks
+            self.check_team_to_clue_end_state()
+
+    def test_inital_start_game_large(self):
+        '''Test calling start_play() once with 101 players (51 teams)'''
+        with self.assertLogs(level='INFO') as lc:
+            self.users, self.chars = make_n_users_and_characters(101)
+            save_all(self.users)
+            save_all(self.chars)
+            start_game()
+            # Start game logs
+            self.assertIn('Starting Game', '\t'.join(lc.output))
+            self.assertIn("The following were added by start_name(): {'teams': {'solo': 1, 'duo': 50}, 'team_to_clues': {", '\t'.join(lc.output))
+            # Team checks
+            self.assertEqual(len(Team.objects.all()), 51)
+            # Team to clue checks
+            self.check_team_to_clue_end_state()
+
+    def test_inital_start_game_large_even(self):
+        '''Test calling start_play() once with 100 players (50 teams)'''
+        with self.assertLogs(level='INFO') as lc:
+            self.users, self.chars = make_n_users_and_characters(100)
+            save_all(self.users)
+            save_all(self.chars)
+            start_game()
+            # Start game logs
+            self.assertIn('Starting Game', '\t'.join(lc.output))
+            self.assertIn("The following were added by start_name(): {'teams': {'solo': 0, 'duo': 50}, 'team_to_clues': {", '\t'.join(lc.output))
+            # Team checks
+            self.assertEqual(len(Team.objects.all()), 50)
+            # Team to clue checks
+            self.check_team_to_clue_end_state()
+
+    def test_multiple_start_game_calls(self):
+        '''Test calling start_game() multiple times'''
+        self.test_inital_start_game_large()
+        players = [10, 11, 1, 7, 8, 1, 1, 1]
+        teams = [56, 62, 63, 67, 71, 72, 73, 74]
+        for additional_players, total_team_count in zip(players, teams):
+            with self.assertLogs(level='INFO') as lc:
+                self.users, self.chars = make_n_users_and_characters(additional_players)
+                save_all(self.users)
+                save_all(self.chars)
+                start_game()
+                # Start game logs
+                self.assertIn('Starting Game', '\t'.join(lc.output))
+                # Team checks
+                self.assertEqual(len(Team.objects.all()), total_team_count)
+                # Team to clue checks
+                self.check_team_to_clue_end_state()

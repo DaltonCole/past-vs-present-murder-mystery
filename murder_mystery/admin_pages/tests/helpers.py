@@ -27,7 +27,8 @@ def make_default_character(user):
 
 def make_n_users_and_characters(n: int) -> Tuple[List[User], List[Character]]:
     '''Creates n Users and associated Charactersr'''
-    users = [User(username=num) for num in range(n)]
+    user_count = len(User.objects.all())
+    users = [User(username=num + user_count) for num in range(n)]
     chars = [make_default_character(user) for user in users]
 
     return  (users, chars)
