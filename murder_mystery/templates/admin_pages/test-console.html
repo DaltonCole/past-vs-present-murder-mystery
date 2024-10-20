@@ -14,10 +14,11 @@
 <!--
 -->
 <!-- BEGIN Perform Actions-->
-<form action="{% url 'admin-pages:console' %}" method="POST">
+<form action="{% url 'admin-pages:test-console' %}" method="POST">
     {% csrf_token %}
     <!-- Start Game -->
     <button type="submit" name="action" value="start-game">Start Game</button>
+    <button type="submit" name="action" value="add-default-character">Add default Character</button>
 </form>
 
 <!-- END Perform Actions-->
