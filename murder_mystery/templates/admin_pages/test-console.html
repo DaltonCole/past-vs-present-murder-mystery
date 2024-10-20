@@ -1,31 +1,22 @@
-{% extends "base.html" %}
+{% extends "admin_pages/console.html" %}
 
-{% block title %}Admin Console{% endblock %}
+{% block title %}Test Admin Console{% endblock %}
 
-{% block content %}
+{% block console %}{% endblock console %}
+
+{% block test-console %}
+<br>
+<br>
+<br>
 <!-- Report action performed -->
-{% if action %}
-<p>{{action}}</p>
-{% endif %}
-
 {% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<p>{{ matching_character.real_name }}</p>
-<!--
--->
 <!-- BEGIN Perform Actions-->
-<form action="{% url 'admin-pages:test-console' %}" method="POST">
+<form action="{% url reverse %}" method="POST">
     {% csrf_token %}
     <!-- Start Game -->
-    <button type="submit" name="action" value="start-game">Start Game</button>
     <button type="submit" name="action" value="add-default-character">Add default Character</button>
 </form>
-
 <!-- END Perform Actions-->
 
-<form action="{% url 'logout' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
-</form>
 {% endif %}
-{% endblock %}
+{% endblock test-console %}

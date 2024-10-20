@@ -1,6 +1,9 @@
 {% extends "base.html" %}
+<p>TEST</p>
+<p>Hi {{ user.username }}!</p>
 
 {% block title %}Admin Console{% endblock %}
+<p>TEst</p>
 
 {% block content %}
 <!-- Report action performed -->
@@ -10,21 +13,21 @@
 
 {% if user.is_authenticated %}
 <p>Hi {{ user.username }}!</p>
-<p>{{ matching_character.real_name }}</p>
-<!--
--->
+
 <!-- BEGIN Perform Actions-->
-<form action="{% url 'admin-pages:console' %}" method="POST">
+<form action="{% url reverse %}" method="POST">
     {% csrf_token %}
     <!-- Start Game -->
     <button type="submit" name="action" value="start-game">Start Game</button>
 </form>
-
 <!-- END Perform Actions-->
 
+<!-- BEGIN logout -->
 <form action="{% url 'logout' %}" method="post">
   {% csrf_token %}
   <button type="submit">Log Out</button>
 </form>
+<!-- END logout -->
 {% endif %}
-{% endblock %}
+{% block test-console %} {% endblock test-console %}
+{% endblock content %}

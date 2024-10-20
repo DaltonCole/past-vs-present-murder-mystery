@@ -11,7 +11,6 @@ def action(request):
 
     if 'action' in request.POST.keys():
         if 'start-game' == request.POST['action']:
-            context['action'] = 'Game has been started'
             context['action'] = start_game()
 
         if 'add-default-character' == request.POST['action']:
@@ -26,11 +25,13 @@ def action(request):
 @staff_member_required
 def console(request):
     context = action(request)
+    context['reverse'] = 'admin-pages:console'
 
     return render(request, 'admin_pages/console.html', context)
 
 @staff_member_required
 def test_console(request):
     context = action(request)
+    context['reverse'] = 'admin-pages:test-console'
 
     return render(request, 'admin_pages/test-console.html', context)
