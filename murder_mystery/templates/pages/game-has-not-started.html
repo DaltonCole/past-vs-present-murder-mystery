@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Pregame{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<p>Hi {{ character.real_name }}! Please wait here until the game has started. You will be told to refresh the page when the game begins!</p>
+{% else %}
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+{% endif %}
+{% endblock %}

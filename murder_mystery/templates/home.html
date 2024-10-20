@@ -5,7 +5,7 @@
 {% block content %}
 {% if user.is_authenticated %}
 <p>Hi {{ user.username }}!</p>
-<p>{{ matching_character.real_name }}</p>
+<p>{{ character.real_name }}</p>
 <!--
 -->
 <form action="{% url 'logout' %}" method="post">
