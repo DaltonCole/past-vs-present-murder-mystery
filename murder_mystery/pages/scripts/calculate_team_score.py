@@ -8,6 +8,7 @@ from teams.scripts.get_team_clues_in_order import get_team_clues_in_order
 logger = logging.getLogger(__name__)
 
 POINTS_PER_CLUE = 50
+INCORRECT_GUESS_DEDUCTION = 10
 
 def calculate_team_score(team: Team) -> Tuple[int, List[Tuple[int, str]]]:
     '''Get the total score for this team and the reason behind it
@@ -30,6 +31,10 @@ def calculate_team_score(team: Team) -> Tuple[int, List[Tuple[int, str]]]:
     for i, team_clue in enumerate(filter(lambda team_clue: team_clue.found, team_clues)):
         total_points += POINTS_PER_CLUE
         reasons.append((POINTS_PER_CLUE, f'Found clue #{i + 1}'))
+
+    # --- Incorrect Guess deductions --- #
+    for team_clue in team_clues:
+        total_points -= team_clue.tries * INCORRECT_GUESS_DEDUCTION
 
     # --- Bonus points --- #
     _, team_bonus_points = get_team_bonus_points(team)
