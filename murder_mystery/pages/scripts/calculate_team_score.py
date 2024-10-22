@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 POINTS_PER_CLUE = 50
 INCORRECT_GUESS_DEDUCTION = 10
+HINT_DEDUCTION = 10 # TODO: implement + unittest
 
 def calculate_team_score(team: Team) -> Tuple[int, List[Tuple[int, str]]]:
     '''Get the total score for this team and the reason behind it

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}- Home{% endblock %}
+
+{% block content %}
+{# User has to be logged in #}
+{% if not user.is_authenticated %}
+
+<p>You are not logged in</p>
+<a href="{% url 'login' %}">Log In</a>
+
+{% else %}
+
+<p>Hi {{ user.username }} - {{ character.real_name }}!</p>
+
+<!-- Page tabs
+<script src="{% static 'pages/js/tabs.js' %}" async></script>
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/pages.css' %}">
+-->
+<nav>
+  <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <button class="nav-link active" id="nav-clue-tab" data-bs-toggle="tab" data-bs-target="#nav-clue" type="button" role="tab" aria-controls="nav-clue" aria-selected="true">Clue</button>
+    <button class="nav-link" id="nav-past-clues-tab" data-bs-toggle="tab" data-bs-target="#nav-past-clues" type="button" role="tab" aria-controls="nav-past-clues" aria-selected="false">Past Clues</button>
+    <button class="nav-link" id="nav-score-tab" data-bs-toggle="tab" data-bs-target="#nav-score" type="button" role="tab" aria-controls="nav-score" aria-selected="false">Score</button>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-clue" role="tabpanel" aria-labelledby="nav-clue-tab">{% include 'pages/clue.html' %}</div>
+  <div class="tab-pane fade" id="nav-past-clues" role="tabpanel" aria-labelledby="nav-past-clues-tab">{% include 'pages/past-clues.html' %}</div>
+  <div class="tab-pane fade" id="nav-score" role="tabpanel" aria-labelledby="nav-score-tab">{% include 'pages/score.html' %}</div>
+</div>
+<!-- TODO: REMOVE -->
+<form action="{% url 'logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+{% endif %}
+{% endblock %}

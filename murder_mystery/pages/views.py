@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from characters.models import Character
 from pages.scripts.calculate_team_score import calculate_team_score
+from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
 from teams.models import Team
 from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
@@ -23,6 +24,16 @@ def home(request):
     if len(Team.objects.all()) == 0:
         return render(request, 'pages/game-has-not-started.html', context)
 
+    # --- Actions --- #
+    if 'action' in request.POST.keys():
+        if 'submit-clue' == request.POST['action']:
+            # TODO: If guess is correct, do not add a try (i.e. correct solution does not add a tries)
+            pass
+
+        if 'submit-final-answer' == request.POST['action']:
+            pass
+
+    # --- Get Game State --- #
     # Get team
     context['team'] = get_team(context['character'])
 
@@ -33,6 +44,7 @@ def home(request):
     context['solved_clues'] = get_solved_clues(context['team'])
 
     # Get next clue
-    context['next_clue'] = get_next_clue(context['team'])
+    next_clue = get_next_clue(context['team'])
+    context['next_clue'] = team_to_clue_to_clue_context(next_clue) if next_clue is not None else None
 
-    return render(request, 'home.html', context)
+    return render(request, 'pages/home.html', context)
