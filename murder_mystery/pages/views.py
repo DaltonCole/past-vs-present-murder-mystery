@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from characters.models import Character
+from pages.forms import TextClueForm, VideoClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.calculate_team_score import HINT_DEDUCTION
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
@@ -50,5 +51,44 @@ def home(request):
 
     # Hint point deduction
     context['hint_cost'] = HINT_DEDUCTION
+
+    # --- Clue Answer --- #
+    if next_clue is not None:
+        if next_clue.video_clue is not None:
+            form = VideoClueForm(
+                    request.POST or None,
+                    request.FILES or None,
+                    )
+        else:
+            form = TextClueForm(
+                    request.POST or None,
+                    request.FILES or None,
+                    )
+
+        if form.is_valid():
+            if type(form) is VideoClueForm:
+                answer = form.cleaned_data['answer']
+                if next_clue.video_clue.location == answer:
+                    next_clue.found = True
+                    next_clue.save()
+                    return redirect('pages:home')
+                else:
+                    context['incorrect'] = 'Incorrect Guess!'
+                    form.POST = None
+            else:
+                answer = int(form.cleaned_data['answer'])
+                if next_clue.text_clue.character_id.id == answer:
+                    next_clue.found = True
+                    next_clue.save()
+                    return redirect('pages:home')
+                else:
+                    context['incorrect'] = 'Incorrect Guess!'
+                    form.POST = None
+
+        context['form'] = form
+
+    else:
+        # TODO - Allow the user to make a final guess
+        context['final_guess'] = True
 
     return render(request, 'pages/home.html', context)

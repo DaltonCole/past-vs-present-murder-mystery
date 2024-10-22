@@ -15,6 +15,12 @@
 <!-- END Clue -->
 
 <!-- BEGIN Submit Clue -->
+<p>{{ incorrect }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
 <!-- END Submit Clue -->
 
 {# TODO: Add HINT button, mention how it will cost them points #}
