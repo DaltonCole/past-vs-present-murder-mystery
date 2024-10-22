@@ -44,6 +44,13 @@ def action(request):
                 clue.save()
             context['action'] = f'Reset location hints'
 
+        if 'reset-finds' == request.POST['action']:
+            for clue in TeamToClue.objects.all():
+                clue.location_hints = 0
+                clue.found = False
+                clue.save()
+            context['action'] = f'Reset clue finds and hints'
+
     return context
 
 # Create your views here.
