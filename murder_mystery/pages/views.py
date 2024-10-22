@@ -13,6 +13,17 @@ from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
 from teams.scripts.get_team import get_team
 
+def score(request):
+    print('-dfsdfdsfdsfds---------_DFDFD')
+    character = Character.objects.get(username=request.user.id)
+    team = get_team(character)
+    total_points, points_reason = calculate_team_score(team)
+
+    response = ''
+    for i, (point, reason) in enumerate(points_reason):
+        response += f'<tr><td scope="row">{point}</td><td>{reason}</td></tr>'
+    return HttpResponse(response)
+
 @login_required(login_url='accounts/signup')
 def home(request):
     context = {}
@@ -74,6 +85,8 @@ def home(request):
                     return redirect('pages:home')
                 else:
                     context['incorrect'] = 'Incorrect Guess!'
+                    next_clue.tries += 1
+                    next_clue.save()
                     form.POST = None
             else:
                 answer = int(form.cleaned_data['answer'])
@@ -83,6 +96,8 @@ def home(request):
                     return redirect('pages:home')
                 else:
                     context['incorrect'] = 'Incorrect Guess!'
+                    next_clue.tries += 1
+                    next_clue.save()
                     form.POST = None
 
         context['form'] = form

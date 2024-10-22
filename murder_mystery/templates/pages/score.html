@@ -1,1 +1,16 @@
-<p>score</p>
+<h1>Score</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Points</th>
+            <th scope="col">Reason</th>
+        </tr>
+    </thead>
+    <tbody id="test" hx-get"/pages/score" hx-trigger="every 2s" hx-target="#test">
+        <div  ></div>
+        <div hx-get"/pages/score" hx-trigger="every 10s"></div>
+    </tbody>
+</table>
+
+<button class="btn btn-primary" hx-get="/score" hx-trigger="click" hx-target="#test">TEST</button>

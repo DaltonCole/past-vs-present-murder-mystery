@@ -33,9 +33,20 @@ def calculate_team_score(team: Team) -> Tuple[int, List[Tuple[int, str]]]:
         total_points += POINTS_PER_CLUE
         reasons.append((POINTS_PER_CLUE, f'Found clue #{i + 1}'))
 
+    # --- Hint Deduction --- #
+    for team_clue in team_clues:
+        lost_points = team_clue.location_hints * HINT_DEDUCTION
+        total_points -= lost_points
+        if lost_points > 0:
+            reasons.append((-lost_points, f'{team_clue.location_hints} additional hint(s) for clue #{team_clue.order}'))
+
     # --- Incorrect Guess deductions --- #
     for team_clue in team_clues:
-        total_points -= team_clue.tries * INCORRECT_GUESS_DEDUCTION
+        lost_points = team_clue.tries * INCORRECT_GUESS_DEDUCTION
+        print(team_clue.tries)
+        total_points -= lost_points
+        if lost_points > 0:
+            reasons.append((-lost_points, f'{team_clue.tries} incorrect guesses for clue #{team_clue.order}'))
 
     # --- Bonus points --- #
     _, team_bonus_points = get_team_bonus_points(team)
