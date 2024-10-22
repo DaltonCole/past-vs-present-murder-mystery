@@ -37,7 +37,7 @@ def team_to_clue_to_clue_context(team_to_clue: TeamToClue) -> Dict[str, str]:
         location_hint1 = clue.descriptor1_flavor_text.flavor_text.format(**{'char': reference_char, 'description': reference_char.descriptor1})
         location_hint2 = clue.descriptor2_flavor_text.flavor_text.format(**{'char': reference_char, 'description': reference_char.descriptor2})
         location_hint3 = clue.descriptor3_flavor_text.flavor_text.format(**{'char': reference_char, 'description': reference_char.descriptor3})
-        location_hint3 += '\n'
+        location_hint3 += ' + '
         location_hint3 += clue.occupation_flavor_text.flavor_text.format(**{'char': reference_char, 'occupation': reference_char.occupation})
 
         return {

@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from characters.models import Character
 from pages.scripts.calculate_team_score import calculate_team_score
+from pages.scripts.calculate_team_score import HINT_DEDUCTION
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
 from teams.models import Team
 from teams.scripts.get_next_clue import get_next_clue
@@ -46,5 +47,8 @@ def home(request):
     # Get next clue
     next_clue = get_next_clue(context['team'])
     context['next_clue'] = team_to_clue_to_clue_context(next_clue) if next_clue is not None else None
+
+    # Hint point deduction
+    context['hint_cost'] = HINT_DEDUCTION
 
     return render(request, 'pages/home.html', context)
