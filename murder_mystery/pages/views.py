@@ -3,6 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
 
+from bonus_points.forms import BonusPointForm
 from characters.models import Character
 from pages.forms import TextClueForm, VideoClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
@@ -105,5 +106,9 @@ def home(request):
     else:
         # TODO - Allow the user to make a final guess
         context['final_guess'] = True
+
+    # --- Bonus Point Submission --- #
+    context['bonus_point_form'] = BonusPointForm()
+
 
     return render(request, 'pages/home.html', context)

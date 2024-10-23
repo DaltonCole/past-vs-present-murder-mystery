@@ -5,6 +5,7 @@ from django.shortcuts import render
 from admin_pages.scripts.make_teams import make_teams
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
+from bonus_points.models import TeamToBonusPoint
 from characters.models import Character
 from teams.models import Team, TeamToClue
 
@@ -50,6 +51,10 @@ def action(request):
                 clue.found = False
                 clue.save()
             context['action'] = f'Reset clue finds and hints'
+
+        if 'reset-bonus-points' == request.POST['action']:
+            TeamToBonusPoint.objects().all().delete()
+            context['action'] = f'Reset bonus points'
 
     return context
 

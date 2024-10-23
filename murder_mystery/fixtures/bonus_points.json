@@ -4,7 +4,8 @@
         "pk": 0,
         "fields": {
             "amount": 50,
-            "reason": "For capturing that horrible Giraffe!"
+            "reason": "For capturing that horrible Giraffe!",
+            "answer": "eiJQ0XDsczT4sBi3dTXfN7sXbWE445epB"
         }
     },
     {
@@ -12,7 +13,8 @@
         "pk": 1,
         "fields": {
             "amount": 50,
-            "reason": "For capturing that slimy Octopus!"
+            "reason": "For capturing that slimy Octopus!",
+            "answer": "eiJQ0XDsczT4sBi3dTXfN7sXbWE445epB"
         }
     },
     {
@@ -20,7 +22,8 @@
         "pk": 2,
         "fields": {
             "amount": 50,
-            "reason": "For capturing that terribly cool Penguin!"
+            "reason": "For capturing that terribly cool Penguin!",
+            "answer": "eiJQ0XDsczT4sBi3dTXfN7sXbWE445epB"
         }
     },
     {
@@ -28,7 +31,17 @@
         "pk": 3,
         "fields": {
             "amount": 50,
-            "reason": "For capturing that horrendous Elephant!"
+            "reason": "For capturing that horrendous Elephant!",
+            "answer": "eiJQ0XDsczT4sBi3dTXfN7sXbWE445epB"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 3,
+        "fields": {
+            "amount": 1,
+            "reason": "For Knowing Daltie's favorite animal!",
+            "answer": "giraffe"
         }
     }
 ]
