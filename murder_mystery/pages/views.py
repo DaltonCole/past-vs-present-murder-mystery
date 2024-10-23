@@ -22,9 +22,9 @@ def found_clues(request):
     response = ''
     for i, clue in enumerate(solved_clues):
         if clue.video_clue is not None:
-            response += f'<tr><td scope="row">{i}</td><td><a href="{clue.video_clue.video_url}" target="_blank">video</a></td></tr>'
+            response += f'<tr><td scope="row">{i+1}</td><td><a href="{clue.video_clue.video_url}" target="_blank">video</a></td></tr>'
         else:
-            response += f'<tr><td scope="row">{i}</td><td>{clue.text_clue.story_clue.clue}</td></tr>'
+            response += f'<tr><td scope="row">{i+1}</td><td>{clue.text_clue.story_clue.clue}</td></tr>'
     return HttpResponse(response)
 
 def score(request):

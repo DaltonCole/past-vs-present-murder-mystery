@@ -53,7 +53,7 @@ def action(request):
             context['action'] = f'Reset clue finds and hints'
 
         if 'reset-bonus-points' == request.POST['action']:
-            TeamToBonusPoint.objects().all().delete()
+            TeamToBonusPoint.objects.all().delete()
             context['action'] = f'Reset bonus points'
 
     return context

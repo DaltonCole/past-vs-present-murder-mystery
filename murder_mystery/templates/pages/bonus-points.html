@@ -1,4 +1,4 @@
-<h1>Clue</h1>
+<h1>Bonus Points</h1>
 
 <p id="bonus-status"></p>
 <!-- BEGIN Submit Bonus Points -->
@@ -8,4 +8,9 @@
     {{ bonus_point_form.as_p }}
     <button class="btn btn-primary" type="submit">Submit</button>
 </form>
+
 <!-- END Submit Bonus Points -->
+<br/>
+<p id="remaining-bonuses"></p>
+
+<button class="btn btn-primary" hx-get="/bonus_points/remaining" hx-trigger="every 2s" hx-target="#remaining-bonuses" style="display: none;">TEST</button>

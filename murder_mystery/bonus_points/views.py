@@ -25,7 +25,14 @@ def bonus_point_submission(request):
                     team = get_team(char)
                     team_to_bonus = TeamToBonusPoint(team=team, bonus_point=matching_bonus_points)
                     team_to_bonus.save()
-                    return HttpResponse(f'You\'ve been awareded {matching_bonus_points.amount} bonus point(s)!')
+                    return HttpResponse(f'<p style="color:green;">You\'ve been awareded {matching_bonus_points.amount} bonus point(s)!</p>')
 
 
-    return HttpResponse('WRONG!')
+    return HttpResponse('<p style="color:red;">WRONG!</p>')
+
+def bonus_points_remaining(request):
+    bonus_points = BonusPoint.objects.exclude(id__in=[point.bonus_point.id for point in TeamToBonusPoint.objects.all()])
+
+    remaining_points = sum([point.amount for point in bonus_points])
+
+    return HttpResponse(f'There are {len(bonus_points)} hidden clues totaling {remaining_points} points remaining!')
