@@ -7,10 +7,8 @@
             <th scope="col">Reason</th>
         </tr>
     </thead>
-    <tbody id="test" hx-get"/pages/score" hx-trigger="every 2s" hx-target="#test">
-        <div  ></div>
-        <div hx-get"/pages/score" hx-trigger="every 10s"></div>
+    <tbody id="score">
     </tbody>
 </table>
 
-<button class="btn btn-primary" hx-get="/score" hx-trigger="every 2s" hx-target="#test">TEST</button>
+<button class="btn btn-primary" hx-get="/score" hx-trigger="every 2s" hx-target="#score" style="display: none;">TEST</button>

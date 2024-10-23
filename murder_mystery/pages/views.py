@@ -14,8 +14,20 @@ from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
 from teams.scripts.get_team import get_team
 
+def found_clues(request):
+    character = Character.objects.get(username=request.user.id)
+    team = get_team(character)
+    solved_clues = get_solved_clues(team)
+
+    response = ''
+    for i, clue in enumerate(solved_clues):
+        if clue.video_clue is not None:
+            response += f'<tr><td scope="row">{i}</td><td><a href="{clue.video_clue.video_url}" target="_blank">video</a></td></tr>'
+        else:
+            response += f'<tr><td scope="row">{i}</td><td>{clue.text_clue.story_clue.clue}</td></tr>'
+    return HttpResponse(response)
+
 def score(request):
-    print('-dfsdfdsfdsfds---------_DFDFD')
     character = Character.objects.get(username=request.user.id)
     team = get_team(character)
     total_points, points_reason = calculate_team_score(team)
@@ -23,6 +35,7 @@ def score(request):
     response = ''
     for i, (point, reason) in enumerate(points_reason):
         response += f'<tr><td scope="row">{point}</td><td>{reason}</td></tr>'
+    response += f'<tr><td scope="row"><b>Total:</b></td><td><b>{total_points}</b></td></tr>'
     return HttpResponse(response)
 
 @login_required(login_url='accounts/signup')
