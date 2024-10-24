@@ -8,11 +8,12 @@ from admin_pages.scripts.assign_clues_to_teams import (
     team_has_story_clue,
 )
 from admin_pages.scripts.make_character_clue import make_character_clue
+from admin_pages.scripts.make_location_clue import make_location_clue
 from admin_pages.scripts.make_teams import make_teams
 from admin_pages.scripts.start_game import start_game
 from character_clues.models import CharacterClue
 from characters.models import Character
-from location_clues.models import LocationClue
+from location_clues.models import Location, LocationClue
 from story_clues.models import StoryClue
 from teams.models import Team, TeamToClue
 from teams.scripts.get_team import get_team
@@ -89,6 +90,47 @@ class TeamToClueEndState(TestCase):
                     else zip(character_clues_order, location_clues_order)
             for clue1, clue2 in iter:
                 self.assertEqual(clue1+1, clue2, f'Clue types are not alternating. Video clue order: {location_clues_order}, character clue order: {character_clues_order}')
+
+
+class MakeLocationClue(MakeTeams):
+    fixtures = ['fixtures/location.json',
+                'fixtures/story_clue.json',
+                ]
+
+    def location_clue_validation(self):
+        '''Test all character clues for individual descriptor uniqueness and not none ness'''
+        '''Test all location clues for location uniqueness and not none ness'''
+        self.assertGreater(len(LocationClue.objects.all()), 0)
+        for location_clue in LocationClue.objects.all():
+            # Test not null for all fields
+            self.assertIsNotNone(location_clue.story_clue)
+            self.assertIsNotNone(location_clue.location)
+            self.assertIsNotNone(location_clue.location.location)
+            self.assertIsNotNone(location_clue.location.location_hint1)
+            self.assertIsNotNone(location_clue.location.location_hint2)
+            self.assertIsNotNone(location_clue.location.location_hint3)
+            # Make sure each descriptor_flavor_text is different
+            des_character = set()
+            des_character.add(location_clue.location.location_hint1)
+            des_character.add(location_clue.location.location_hint2)
+            des_character.add(location_clue.location.location_hint3)
+            self.assertEqual(len(des_character), 3)
+
+    def test_single_location_clue(self):
+        '''Test the creation of a single location clue'''
+        self.make_teams()
+        location = Location.objects.all()[0]
+        story_clue = StoryClue.objects.all()[0]
+        make_location_clue(story_clue, location)
+        self.location_clue_validation()
+
+    def test_many_character_clues(self):
+        '''Test creating multiple character clues'''
+        self.make_teams()
+        location = Location.objects.all()[0]
+        for story_clue in StoryClue.objects.all():
+            make_location_clue(story_clue, location)
+        self.location_clue_validation()
 
 
 class MakeCharacterClue(MakeTeams):
