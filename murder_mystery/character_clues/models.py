@@ -1,12 +1,9 @@
 from django.db import models
-from characters.models import Character
 
+from characters.models import Character
+from story_clues.models import StoryClue
 
 # Create your models here.
-class StoryTextClue(models.Model):
-    clue = models.TextField()
-
-
 class OccupationFlavorText(models.Model):
     flavor_text = models.TextField()
 
@@ -15,10 +12,10 @@ class DescriptorFlavorText(models.Model):
     flavor_text = models.TextField()
 
 
-class TextClue(models.Model):
+class CharacterClue(models.Model):
     # Clue to solve the murder mystery
     story_clue = models.ForeignKey(
-        StoryTextClue,
+        StoryClue,
         on_delete=models.CASCADE,
     )
 

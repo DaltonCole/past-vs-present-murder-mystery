@@ -42,8 +42,8 @@ class GetTeamTests(TestCase):
 class GetTeamCluesInOrderTests(MakeTeams):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
     def test_get_team_clues_in_order(self):
         with self.assertLogs(level='INFO') as lc:
@@ -60,8 +60,8 @@ class GetTeamCluesInOrderTests(MakeTeams):
 class GetSolvedCluesTests(MakeTeams):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
     def test_get_solved_clues(self):
         with self.assertLogs(level='INFO') as lc:
@@ -81,8 +81,8 @@ class GetSolvedCluesTests(MakeTeams):
 class GetNextClueTests(MakeTeams):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
     def test_get_next_clue(self):
         with self.assertLogs(level='INFO') as lc:

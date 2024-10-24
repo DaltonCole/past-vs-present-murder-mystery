@@ -1,0 +1,23 @@
+[
+    {
+        "model": "story_clues.StoryClue",
+        "pk": 0,
+        "fields": {
+            "clue": "test"
+        }
+    },
+    {
+        "model": "story_clues.StoryClue",
+        "pk": 1,
+        "fields": {
+            "clue": "test2"
+        }
+    },
+    {
+        "model": "story_clues.StoryClue",
+        "pk": 2,
+        "fields": {
+            "clue": "<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\">Video Vlog #1</a>"
+        }
+    }
+]

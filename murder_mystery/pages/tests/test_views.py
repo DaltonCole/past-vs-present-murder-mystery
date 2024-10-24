@@ -21,8 +21,8 @@ logging.basicConfig(level=logging.INFO)
 ALL_FIXTURES = ['fixtures/bonus_points.json',
                 'fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
 class HomePreGameTests(TestCase):

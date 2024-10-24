@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TextCluesConfig(AppConfig):
+class LocationCluesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'text_clues'
+    name = 'location_clues'

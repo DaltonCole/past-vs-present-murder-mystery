@@ -43,7 +43,6 @@ def calculate_team_score(team: Team) -> Tuple[int, List[Tuple[int, str]]]:
     # --- Incorrect Guess deductions --- #
     for team_clue in team_clues:
         lost_points = team_clue.tries * INCORRECT_GUESS_DEDUCTION
-        print(team_clue.tries)
         total_points -= lost_points
         if lost_points > 0:
             reasons.append((-lost_points, f'{team_clue.tries} incorrect guesses for clue #{team_clue.order}'))

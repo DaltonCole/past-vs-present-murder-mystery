@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import VideoClue
+
+from .models import StoryClue
 
 # Register your models here.
-admin.site.register(VideoClue)
+admin.site.register(StoryClue)

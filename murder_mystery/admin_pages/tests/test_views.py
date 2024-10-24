@@ -1,10 +1,12 @@
+import logging
+
+from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.test import TestCase
-from django.contrib.auth.models import User
-import logging
 
 from characters.models import Character
 from teams.models import Team
+
 from .helpers import make_admin_user, make_n_users_and_characters, save_all
 from .test_scripts import TeamToClueEndState
 
@@ -15,8 +17,8 @@ logging.basicConfig(level=logging.INFO)
 class ConsoleTests(TeamToClueEndState):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
     def setUp(self):

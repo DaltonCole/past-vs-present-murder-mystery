@@ -1,6 +1,5 @@
-from typing import Union
 import logging
-
+from typing import Union
 
 from characters.models import Character
 from teams.models import Team

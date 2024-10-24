@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from bonus_points.forms import BonusPointForm
 from characters.models import Character
-from pages.forms import TextClueForm, VideoClueForm
+from pages.forms import CharacterClueForm, LocationClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.calculate_team_score import HINT_DEDUCTION
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
@@ -21,10 +21,8 @@ def found_clues(request):
 
     response = ''
     for i, clue in enumerate(solved_clues):
-        if clue.video_clue is not None:
-            response += f'<tr><td scope="row">{i+1}</td><td><a href="{clue.video_clue.video_url}" target="_blank">video</a></td></tr>'
-        else:
-            response += f'<tr><td scope="row">{i+1}</td><td>{clue.text_clue.story_clue.clue}</td></tr>'
+        story_clue = clue.location_clue.story_clue if clue.location_clue is not None else clue.character_clue.story_clue
+        response += f'<tr><td scope="row">{i+1}</td><td>{story_clue}</td></tr>'
     return HttpResponse(response)
 
 def score(request):
@@ -79,21 +77,21 @@ def home(request):
 
     # --- Clue Answer --- #
     if next_clue is not None:
-        if next_clue.video_clue is not None:
-            form = VideoClueForm(
+        if next_clue.location_clue is not None:
+            form = LocationClueForm(
                     request.POST or None,
                     request.FILES or None,
                     )
         else:
-            form = TextClueForm(
+            form = CharacterClueForm(
                     request.POST or None,
                     request.FILES or None,
                     )
 
         if form.is_valid():
-            if type(form) is VideoClueForm:
+            if type(form) is LocationClueForm:
                 answer = form.cleaned_data['answer']
-                if next_clue.video_clue.location == answer:
+                if next_clue.location_clue.location.location == answer:
                     next_clue.found = True
                     next_clue.save()
                     return redirect('pages:home')
@@ -104,7 +102,7 @@ def home(request):
                     form.POST = None
             else:
                 answer = int(form.cleaned_data['answer'])
-                if next_clue.text_clue.character_id.id == answer:
+                if next_clue.character_clue.character_id.id == answer:
                     next_clue.found = True
                     next_clue.save()
                     return redirect('pages:home')

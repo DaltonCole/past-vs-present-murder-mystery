@@ -1,16 +1,23 @@
-from django.test import TestCase
-from django.contrib.auth.models import User
 import logging
 
-from characters.models import Character
-from teams.models import Team, TeamToClue
-from video_clues.models import VideoClue
-from text_clues.models import TextClue, StoryTextClue
-from admin_pages.scripts.assign_clues_to_teams import assign_clues_to_teams, team_has_story_text_clue
+from django.contrib.auth.models import User
+from django.test import TestCase
+
+from admin_pages.scripts.assign_clues_to_teams import (
+    assign_clues_to_teams,
+    team_has_story_clue,
+)
+from admin_pages.scripts.make_character_clue import make_character_clue
 from admin_pages.scripts.make_teams import make_teams
-from admin_pages.scripts.make_text_clue import make_text_clue
 from admin_pages.scripts.start_game import start_game
-from .helpers import save_all, make_default_character, make_n_users_and_characters
+from character_clues.models import CharacterClue
+from characters.models import Character
+from location_clues.models import LocationClue
+from story_clues.models import StoryClue
+from teams.models import Team, TeamToClue
+from teams.scripts.get_team import get_team
+
+from .helpers import make_default_character, make_n_users_and_characters, save_all
 
 # Create your tests here.
 logging.basicConfig(level=logging.INFO)
@@ -31,166 +38,158 @@ class TeamToClueEndState(TestCase):
     def check_team_to_clue_end_state(self):
         '''Confirm the end state of TeamToClue
         The following checks are performed:
-            1) Number of teams, video clues, text clues, and team to clue are greater than 0
-            2) There is a mapping from every team to every video + text clue
+            1) Number of teams, location clues, character clues, and team to clue are greater than 0
+            2) There is a mapping from every team to every location + character clue
             3) TeamToClue order for each team goes from 1 to num clues
         '''
-        num_video_clues = len(VideoClue.objects.all())
-        num_text_clues = len(StoryTextClue.objects.all())
+        num_story_clues = len(StoryClue.objects.all())
         self.assertGreater(len(Team.objects.all()), 0)
-        self.assertGreater(num_video_clues, 0)
-        self.assertGreater(num_text_clues, 0)
+        self.assertGreater(num_story_clues, 0)
         self.assertGreater(len(TeamToClue.objects.all()), 0)
 
-        def check_team_to_clue_defaults(team_to_clue, video_clue: bool = False):
+        def check_team_to_clue_defaults(team_to_clue, location_clue: bool = False):
             '''Make sure TeamToClue populates the correct default values'''
             self.assertEqual(False, team_to_clue.found)
             self.assertEqual(0, team_to_clue.location_hints)
             self.assertEqual(0, team_to_clue.tries)
 
-            if video_clue:
-                self.assertIsNone(team_to_clue.text_clue)
-                self.assertIsNotNone(team_to_clue.video_clue)
+            if location_clue:
+                self.assertIsNone(team_to_clue.character_clue)
+                self.assertIsNotNone(team_to_clue.location_clue)
             else:
-                self.assertIsNone(team_to_clue.video_clue)
-                self.assertIsNotNone(team_to_clue.text_clue)
+                self.assertIsNone(team_to_clue.location_clue)
+                self.assertIsNotNone(team_to_clue.character_clue)
 
         for team in Team.objects.all():
             check_order = set()
-            # Make sure every team has every video clue
-            for video_clue in VideoClue.objects.all():
-                team_to_video_clue = TeamToClue.objects.get(team=team, video_clue=video_clue)
-                self.assertNotIn(team_to_video_clue.order, check_order)
-                check_order.add(team_to_video_clue.order)
-                check_team_to_clue_defaults(team_to_video_clue, video_clue=True)
-            # Make sure every team has every text clue
-            for story_text_clue in StoryTextClue.objects.all():
+            # Make sure every team has every story clue
+            for story_clue in StoryClue.objects.all():
                 with self.assertNoLogs(level='WARNING') as _:
-                    team_to_text_clue = team_has_story_text_clue(team, story_text_clue)
-                    self.assertIsNotNone(team_to_text_clue)
-                self.assertNotIn(team_to_text_clue.order, check_order)
-                check_order.add(team_to_text_clue.order)
-                check_team_to_clue_defaults(team_to_text_clue, video_clue=False)
+                    team_to_clue = team_has_story_clue(team, story_clue)
+                    self.assertIsNotNone(team_to_clue)
+                self.assertNotIn(team_to_clue.order, check_order)
+                check_order.add(team_to_clue.order)
+                check_team_to_clue_defaults(team_to_clue, location_clue=team_to_clue.location_clue)
             # Make sure order is from 1-num clues
-            num_clues = num_video_clues + num_text_clues
-            self.assertEqual(num_clues, len(check_order))
-            for i in range(1, num_clues + 1):
+            self.assertEqual(num_story_clues, len(check_order))
+            for i in range(1, num_story_clues + 1):
                 self.assertIn(i, check_order)
-            # Make sure video + text clue order is alternating
+            # Make sure location + character clue order is alternating
             team_clues = TeamToClue.objects.all().filter(team=team)
-            video_clues_order = []
-            text_clues_order = []
+            location_clues_order = []
+            character_clues_order = []
             for team_clue in team_clues:
-                if team_clue.video_clue is not None:
-                    video_clues_order.append(team_clue.order)
+                if team_clue.location_clue is not None:
+                    location_clues_order.append(team_clue.order)
                 else:
-                    text_clues_order.append(team_clue.order)
-            sorted(video_clues_order)
-            sorted(text_clues_order)
-            iter = zip(video_clues_order, text_clues_order) if 1 in video_clues_order \
-                    else zip(text_clues_order, video_clues_order)
+                    character_clues_order.append(team_clue.order)
+            sorted(location_clues_order)
+            sorted(character_clues_order)
+            iter = zip(location_clues_order, character_clues_order) if 1 in location_clues_order \
+                    else zip(character_clues_order, location_clues_order)
             for clue1, clue2 in iter:
-                self.assertEqual(clue1+1, clue2, f'Clue types are not alternating. Video clue order: {video_clues_order}, text clue order: {text_clues_order}')
+                self.assertEqual(clue1+1, clue2, f'Clue types are not alternating. Video clue order: {location_clues_order}, character clue order: {character_clues_order}')
 
 
-class MakeTextClue(MakeTeams):
-    # Since we are loading our actual flavor texts, no ValueErrors should be given
-    # by make_text_clue()
+class MakeCharacterClue(MakeTeams):
+    # Since we are loading our actual flavor characters, no ValueErrors should be given
+    # by make_character_clue()
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
+                'fixtures/story_clue.json',
                 ]
 
 
-    def text_clue_validation(self):
-        '''Test all text clues for individual descriptor uniqueness and not none ness'''
-        self.assertGreater(len(TextClue.objects.all()), 0)
-        for text_clue in TextClue.objects.all():
+    def character_clue_validation(self):
+        '''Test all character clues for individual descriptor uniqueness and not none ness'''
+        self.assertGreater(len(CharacterClue.objects.all()), 0)
+        for character_clue in CharacterClue.objects.all():
             # Test not null for all fields
-            self.assertIsNotNone(text_clue.story_clue)
-            self.assertIsNotNone(text_clue.character_id)
-            self.assertIsNotNone(text_clue.occupation_flavor_text)
-            self.assertIsNotNone(text_clue.descriptor1_flavor_text)
-            self.assertIsNotNone(text_clue.descriptor2_flavor_text)
-            self.assertIsNotNone(text_clue.descriptor3_flavor_text)
+            self.assertIsNotNone(character_clue.story_clue)
+            self.assertIsNotNone(character_clue.character_id)
+            self.assertIsNotNone(character_clue.occupation_flavor_text)
+            self.assertIsNotNone(character_clue.descriptor1_flavor_text)
+            self.assertIsNotNone(character_clue.descriptor2_flavor_text)
+            self.assertIsNotNone(character_clue.descriptor3_flavor_text)
             # Make sure each descriptor_flavor_text is different
-            des_text = set()
-            des_text.add(text_clue.descriptor1_flavor_text)
-            des_text.add(text_clue.descriptor2_flavor_text)
-            des_text.add(text_clue.descriptor3_flavor_text)
-            self.assertEqual(len(des_text), 3)
+            des_character = set()
+            des_character.add(character_clue.descriptor1_flavor_text)
+            des_character.add(character_clue.descriptor2_flavor_text)
+            des_character.add(character_clue.descriptor3_flavor_text)
+            self.assertEqual(len(des_character), 3)
 
-    def test_single_text_clue(self):
-        '''Test the creation of a single text clue'''
+    def test_single_character_clue(self):
+        '''Test the creation of a single character clue'''
         self.make_teams()
-        team = Team.objects.all()[0]
-        story_clue = StoryTextClue.objects.all()[0]
-        make_text_clue(story_clue, team)
-        self.text_clue_validation()
+        char = Character.objects.all()[0]
+        story_clue = StoryClue.objects.all()[0]
+        make_character_clue(story_clue, char)
+        self.character_clue_validation()
 
-    def test_many_text_clues(self):
-        '''Test creating multiple text clues'''
+    def test_many_character_clues(self):
+        '''Test creating multiple character clues'''
         self.make_teams()
-        team = Team.objects.all()[0]
-        for story_clue in StoryTextClue.objects.all():
-            make_text_clue(story_clue, team)
-        self.text_clue_validation()
+        char = Character.objects.all()[0]
+        for story_clue in StoryClue.objects.all():
+            make_character_clue(story_clue, char)
+        self.character_clue_validation()
 
 
-class TeamHasStoryTextClueTests(MakeTeams):
+class TeamHasStoryClueTests(MakeTeams):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
     def setUp(self):
         self.make_teams()
-        self.team = Team.objects.all()[0]
-        self.story_clue = StoryTextClue.objects.all()[0]
-        self.text_clue = make_text_clue(self.story_clue, self.team)
+        self.char = Character.objects.all()[0]
+        self.team = get_team(self.char)
+        self.story_clue = StoryClue.objects.all()[0]
+        self.character_clue = make_character_clue(self.story_clue, self.char)
 
-    def test_team_has_story_text_clue(self):
+    def test_team_has_story_clue(self):
         '''Confirm team has story test clue'''
         team_to_clue = TeamToClue(
                 team=self.team,
-                text_clue=self.text_clue,
+                character_clue=self.character_clue,
                 order=1,
                 )
         team_to_clue.save()
 
         with self.assertNoLogs(level='WARNING') as _:
-            self.assertEqual(team_has_story_text_clue(self.team, self.story_clue), team_to_clue)
+            self.assertEqual(team_has_story_clue(self.team, self.story_clue), team_to_clue)
 
-    def test_team_has_multiple_of_the_same_story_text_clue(self):
-        '''Confirm WARNING log is given if team has multiple of the same story text clue'''
+    def test_team_has_multiple_of_the_same_story_clue(self):
+        '''Confirm WARNING log is given if team has multiple of the same story character clue'''
         team_to_clue = TeamToClue(
                 team=self.team,
-                text_clue=self.text_clue,
+                character_clue=self.character_clue,
                 order=1,
                 )
         team_to_clue.save()
         team_to_clue2 = TeamToClue(
                 team=self.team,
-                text_clue=self.text_clue,
+                character_clue=self.character_clue,
                 order=1,
                 )
         team_to_clue2.save()
 
         with self.assertLogs(level='WARNING') as lc:
-            self.assertEqual(team_has_story_text_clue(self.team, self.story_clue), team_to_clue)
+            self.assertEqual(team_has_story_clue(self.team, self.story_clue), team_to_clue)
             self.assertIn('has multiple of the same story clue, returning first one', '\t'.join(lc.output))
 
-    def test_team_does_not_have_story_text_clue(self):
+    def test_team_does_not_have_story_clue(self):
         '''Confirm team does not have story test clue'''
-        self.assertIsNone(team_has_story_text_clue(self.team, self.story_clue))
+        self.assertIsNone(team_has_story_clue(self.team, self.story_clue))
 
 
 class AssignCluesToTeamsTests(MakeTeams, TeamToClueEndState):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
     def test_add_inital_team_to_clues(self):
@@ -220,15 +219,15 @@ class AssignCluesToTeamsTests(MakeTeams, TeamToClueEndState):
         with self.assertLogs(level='INFO') as lc:
             clues_to_teams = assign_clues_to_teams()
             self.assertIn('has already been assigned clues, skipping', '\t'.join(lc.output))
-            self.assertIn('video clue', '\t'.join(lc.output))
-            self.assertIn('story text clue', '\t'.join(lc.output))
+            self.assertIn('location clue', '\t'.join(lc.output))
+            self.assertIn('story character clue', '\t'.join(lc.output))
         self.check_team_to_clue_end_state()
 
     def test_no_clues(self):
         '''Insure nothing breaks when no clues exist'''
         self.make_teams()
-        VideoClue.objects.all().delete()
-        StoryTextClue.objects.all().delete()
+        LocationClue.objects.all().delete()
+        StoryClue.objects.all().delete()
         with self.assertLogs(level='INFO') as lc:
             clues_to_teams = assign_clues_to_teams()
         self.assertEqual(len(TeamToClue.objects.all()), 0)
@@ -260,7 +259,7 @@ class AssignCluesToTeamsTests(MakeTeams, TeamToClueEndState):
             this_clue_order = []
             for i in range(1, len(team_to_clues) + 1):
                 clue = team_to_clues.get(order=i)
-                clue = clue.video_clue if clue.video_clue is not None else clue.text_clue.story_clue
+                clue = clue.location_clue if clue.location_clue is not None else clue.character_clue.story_clue
                 this_clue_order.append(clue)
             clue_order.add(tuple(this_clue_order))
         self.assertGreater(len(clue_order), 1)
@@ -414,8 +413,8 @@ class MakeTeamsTests(TestCase):
 class StartGameTests(TeamToClueEndState):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
     def test_inital_start_game_small(self):

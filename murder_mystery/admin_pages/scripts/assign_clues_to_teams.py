@@ -1,16 +1,25 @@
-from typing import Dict, Tuple, List, Union
-from random import shuffle
 from itertools import chain, zip_longest
 import logging
+from random import shuffle
+from typing import Dict, List, Tuple, Union
 
 from django.contrib.auth.models import User
 
+from admin_pages.scripts.make_character_clue import make_character_clue
+from admin_pages.scripts.make_location_clue import make_location_clue
+from character_clues.models import (
+    CharacterClue,
+    DescriptorFlavorText,
+    OccupationFlavorText,
+    StoryClue,
+)
 from characters.models import Character
-from characters.scripts.character_queries import characters_on_a_team, characters_not_on_a_team
-from admin_pages.scripts.make_text_clue import make_text_clue
+from characters.scripts.character_queries import (
+    characters_not_on_a_team,
+    characters_on_a_team,
+)
+from location_clues.models import Location, LocationClue
 from teams.models import Team, TeamToClue
-from video_clues.models import VideoClue
-from text_clues.models import TextClue, StoryTextClue, OccupationFlavorText, DescriptorFlavorText
 
 logger = logging.getLogger(__name__)
 
@@ -21,7 +30,7 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
     Every team will be assigned every clue. Teams already with any existing clues will
     not be given more clues.
 
-    Clues will be assigned in alternating order between video and text clues,
+    Clues will be assigned in alternating order between location and character clues,
     with the majority of either going first.
 
     Returns:
@@ -34,24 +43,13 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
     logger.info('Assigning clues to teams')
     clues_to_team = {}
 
-    video_clues = VideoClue.objects.all()
-    story_text_clues = StoryTextClue.objects.all()
+    story_clues = StoryClue.objects.all()
 
-    def random_clue_order() -> List[Union[VideoClue, StoryTextClue]]:
+    def random_clue_order() -> List[StoryClue]:
         '''Get a random clue order'''
-        video_clues_list = list(video_clues)
-        story_text_clues_list = list(story_text_clues)
-        shuffle(video_clues_list)
-        shuffle(story_text_clues_list)
-        all_clues = []
-        for clue1, clue2 in zip_longest(video_clues_list, story_text_clues_list):
-            if len(story_text_clues) > len(video_clues):
-                clue1, clue2 = clue2, clue1
-            if clue1 is not None:
-                all_clues.append(clue1)
-            if clue2 is not None:
-                all_clues.append(clue2)
-        return all_clues
+        story_clues_list = list(story_clues)
+        shuffle(story_clues_list)
+        return story_clues_list
 
     for team in Team.objects.all():
         # Check to see if this team has already been assigned clues
@@ -61,19 +59,28 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
 
         clues = random_clue_order()
 
-        for clue in clues:
+        # Get random location and character clues
+        location_clues = list(Location.objects.all())
+        character_options = list(Character.objects.exclude(id__in=[
+            team.past_character.id if team.past_character is not None else None,
+            team.future_character.id if team.future_character is not None else None]))
+        shuffle(location_clues)
+        shuffle(character_options)
+
+        for i, clue in enumerate(clues):
             # Order for this clue
             next_order = 1 + len(TeamToClue.objects.filter(team=team))
 
-            # Make video clue
-            if type(clue) is VideoClue:
-                logger.info(f'Assigning {team} video clue {clue}')
-                team_to_clue = TeamToClue(team=team, order=next_order, video_clue=clue)
-            # Make text clue
+            # Make location clue
+            if i % 2 == 0 or len(character_options) == 0:
+                logger.info(f'Assigning {team} location clue {clue}')
+                location_clue = make_location_clue(clue, location_clues.pop())
+                team_to_clue = TeamToClue(team=team, order=next_order, location_clue=location_clue)
+            # Make character clue
             else:
-                logger.info(f'Assigning {team} story text clue {clue}')
-                text_clue = make_text_clue(clue, team)
-                team_to_clue = TeamToClue(team=team, order=next_order, text_clue=text_clue)
+                logger.info(f'Assigning {team} story character clue {clue}')
+                character_clue = make_character_clue(clue, character_options.pop())
+                team_to_clue = TeamToClue(team=team, order=next_order, character_clue=character_clue)
 
             # Save
             team_to_clue.save()
@@ -86,21 +93,25 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
     return clues_to_team
 
 
-def team_has_story_text_clue(team: Team, story_clue: StoryTextClue) -> Union[TeamToClue, None]:
-    '''Check to see if a team has already been assigned this story text clue
+def team_has_story_clue(team: Team, story_clue: StoryClue) -> Union[TeamToClue, None]:
+    '''Check to see if a team has already been assigned this story clue
 
     Returns:
-        If this team already has this story text clue assigned, via TeamToClue.text_clue, return that TeamToClue,
+        If this team already has this story clue assigned, via TeamToClue.character_clue
+            or TeamToClue.location_clue, return that TeamToClue,
         If multiple of the same story clues for this team exists, a warning log is given and the
             first result is returned
         None otherwise
     '''
-    team_text_clues = TeamToClue.objects.filter(team=team).exclude(text_clue__isnull=True).filter(text_clue__story_clue=story_clue)
+    team_character_clues = TeamToClue.objects.filter(team=team).exclude(character_clue__isnull=True).filter(character_clue__story_clue=story_clue)
+    team_location_clues = TeamToClue.objects.filter(team=team).exclude(location_clue__isnull=True).filter(location_clue__story_clue=story_clue)
 
-    if len(team_text_clues) > 1:
+    team_clues = list(team_character_clues) + list(team_location_clues)
+
+    if len(team_clues) > 1:
         logger.warning(f'{team} has multiple of the same story clue, returning first one')
-        return team_text_clues[0]
-    if len(team_text_clues) == 1:
-        return team_text_clues[0]
+        return team_clues[0]
+    if len(team_clues) == 1:
+        return team_clues[0]
     else:
         return None

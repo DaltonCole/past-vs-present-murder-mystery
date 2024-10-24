@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class VideoCluesConfig(AppConfig):
+class CharacterCluesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'video_clues'
+    name = 'character_clues'

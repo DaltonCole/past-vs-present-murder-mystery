@@ -16,7 +16,6 @@ def bonus_point_submission(request):
 
             if len(matching_bonus_points) != 0:
                 matching_bonus_points = matching_bonus_points[0]
-                print(len(TeamToBonusPoint.objects.filter(bonus_point=matching_bonus_points)))
 
                 if len(TeamToBonusPoint.objects.filter(bonus_point=matching_bonus_points)) != 0:
                     return HttpResponse('Bonus Points Already Claimed By Someone!')

@@ -22,16 +22,16 @@ def team_to_clue_to_clue_context(team_to_clue: TeamToClue) -> Dict[str, str]:
             'hint3': hint as string or empty string if not unlocked,
         }
     '''
-    if team_to_clue.video_clue is not None:
-        clue = team_to_clue.video_clue
+    if team_to_clue.location_clue is not None:
+        clue = team_to_clue.location_clue
         return {
                 'clue-type': 'location',
-                'hint1': clue.location_hint1,
-                'hint2': clue.location_hint2 if team_to_clue.location_hints > 0 else '',
-                'hint3': clue.location_hint3 if team_to_clue.location_hints > 1 else '',
+                'hint1': clue.location.location_hint1,
+                'hint2': clue.location.location_hint2 if team_to_clue.location_hints > 0 else '',
+                'hint3': clue.location.location_hint3 if team_to_clue.location_hints > 1 else '',
                 }
     else:
-        clue = team_to_clue.text_clue
+        clue = team_to_clue.character_clue
         reference_char = clue.character_id
 
         location_hint1 = clue.descriptor1_flavor_text.flavor_text.format(**{'char': reference_char, 'description': reference_char.descriptor1})

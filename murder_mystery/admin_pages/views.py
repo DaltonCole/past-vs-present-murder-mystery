@@ -2,7 +2,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
 
-from admin_pages.scripts.make_teams import make_teams
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
 from bonus_points.models import TeamToBonusPoint

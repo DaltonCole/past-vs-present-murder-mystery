@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     # Local
     'characters.apps.CharactersConfig',
     'teams.apps.TeamsConfig',
-    'video_clues.apps.VideoCluesConfig',
-    'text_clues.apps.TextCluesConfig',
+    'location_clues.apps.LocationCluesConfig',
+    'character_clues.apps.CharacterCluesConfig',
+    'story_clues.apps.StoryCluesConfig',
     'bonus_points.apps.BonusPointsConfig',
     'solutions.apps.SolutionsConfig',
 
