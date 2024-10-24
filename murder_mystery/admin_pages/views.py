@@ -2,6 +2,9 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
 
+from admin_pages.scripts.make_unique_default_users_and_chars import (
+    make_unique_default_users_and_chars,
+)
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
 from bonus_points.models import TeamToBonusPoint
@@ -18,19 +21,17 @@ def action(request):
             context['action'] = start_game()
 
         # Test console actions
-        if 'add-default-character' == request.POST['action']:
-            user, char = make_n_users_and_characters(1)
-            save_all(user)
-            save_all(char)
-            context['action'] = 'Added 1 user'
+        if 'add-default-characters' == request.POST['action']:
+            make_unique_default_users_and_chars()
+            context['action'] = 'Added 10 user'
 
         if 'clear-characters' == request.POST['action']:
-            teams = Character.objects.all()
-            num_teams = len(teams)
-            for char in teams:
-                user = User.objects.get(username=char.username)
+            users = User.objects.exclude(id=request.user.id)
+            count = 0
+            for user in users:
                 user.delete()
-            context['action'] = f'Removed {num_teams - len(Character.objects.all())} Users and Characters'
+                count += 1
+            context['action'] = f'Removed {count} Users'
 
         if 'clear-teams' == request.POST['action']:
             teams = Team.objects.all()
