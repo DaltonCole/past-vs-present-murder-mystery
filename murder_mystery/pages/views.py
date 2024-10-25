@@ -9,6 +9,8 @@ from pages.forms import CharacterClueForm, LocationClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.calculate_team_score import HINT_DEDUCTION
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
+from solutions.forms import SolutionForm
+from solutions.models import Solution
 from teams.models import Team
 from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
@@ -117,6 +119,26 @@ def home(request):
     else:
         # TODO - Allow the user to make a final guess
         context['final_guess'] = True
+
+    # --- Final Solution --- #
+    pre_populate_solution_form = {
+            'solution': Solution.objects.get(team=context['team']).solution if len(Solution.objects.filter(team=context['team'])) > 0 else ''
+            }
+    solution_form = SolutionForm(
+            request.POST or None,
+            initial=pre_populate_solution_form,
+            )
+
+    if request.method == 'POST' and solution_form.is_valid():
+        try:
+            solution = Solution.objects.get(team=context['team'])
+            solution.solution = solution_form.cleaned_data['solution']
+        except:
+            solution = solution_form.save(commit=False)
+            solution.team = context['team']
+        solution.save()
+
+    context['solution'] = solution_form
 
     # --- Bonus Point Submission --- #
     context['bonus_point_form'] = BonusPointForm()

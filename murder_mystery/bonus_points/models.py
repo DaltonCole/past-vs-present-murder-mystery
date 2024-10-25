@@ -7,6 +7,9 @@ class BonusPoint(models.Model):
     amount = models.SmallIntegerField()
     reason = models.TextField()
     answer = models.CharField(max_length=100)
+    # TODO: Add some bonus points that can be collected multiple times
+    # TODO: Label unique bonus points in bonus point view
+    # TODO: Add second get for non unique bonus points?
 
     def __str__(self):
         return f'({self.amount}) {self.reason}'
