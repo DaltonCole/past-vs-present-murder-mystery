@@ -1,10 +1,9 @@
+from bonus_points.forms import BonusPointForm
+from characters.models import Character
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
-from bonus_points.forms import BonusPointForm
-from characters.models import Character
 from pages.forms import CharacterClueForm, LocationClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.calculate_team_score import HINT_DEDUCTION
@@ -75,6 +74,7 @@ def home(request):
                     request.FILES or None,
                     )
 
+
         if form.is_valid():
             if type(form) is LocationClueForm:
                 answer = form.cleaned_data['answer']
@@ -129,7 +129,7 @@ def solution(request):
             solution.solution = solution_form.cleaned_data['solution']
         except:
             solution = solution_form.save(commit=False)
-            solution.team = context['team']
+            solution.team = team
         solution.save()
 
     context['solution'] = solution_form

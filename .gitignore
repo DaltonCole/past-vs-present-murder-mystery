@@ -1,6 +1,7 @@
 # Django
 **/staticfiles
 murder_mystery_db
+**/*.env*
 
 
 # Byte-compiled / optimized / DLL files

@@ -1,4 +1,5 @@
-python3 manage.py makemigrations
+#! /bin/bash
+
 python3 manage.py migrate --noinput
 python3 manage.py loaddata fixtures/*.json
 python3 manage.py createcachetable
@@ -13,4 +14,4 @@ fi
 
 python3 manage.py collectstatic --noinput
 
-python manage.py runserver 0.0.0.0:80
+exec "$@"

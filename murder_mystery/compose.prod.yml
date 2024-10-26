@@ -3,18 +3,14 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     container_name: murder-mystery-backend
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn murder_mystery.wsgi:application --bind 0.0.0.0:8000
     restart: always
-    volumes:
-      - .:/app
     ports:
       - "8000:8000"
     env_file:
-      - .env.dev
-    networks:
-      - djangonetwork
+      - .env.prod
     depends_on:
       db:
         condition: service_healthy
@@ -23,22 +19,14 @@ services:
     container_name: murder-mystery-postgres-db
     restart: always
     volumes:
-      - data:/var/lib/postgresql/data
-    networks:
-      - djangonetwork
+      - prod-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-h", "db", "-p", "5432", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
-    environment:
-      - POSTGRES_USER=hello_django
-      - POSTGRES_PASSWORD=hello_django
-      - POSTGRES_DB=hello_django_dev
+    env_file:
+      - ./.env.prod.db
 
 volumes:
-  data:
-
-networks:
-  djangonetwork:
-    driver: bridge
+  prod-data:

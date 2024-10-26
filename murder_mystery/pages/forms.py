@@ -14,5 +14,5 @@ class LocationClueForm(forms.Form):
 class CharacterClueForm(forms.Form):
     answer = forms.CharField(
             label='Answer',
-            widget=forms.Select(choices={f'{char.id}': f'{char.character_name} - {char.real_name}' for char in Character.objects.all()})
+            #widget=forms.Select(choices={f'{char.id}': f'{char.character_name} - {char.real_name}' for char in Character.objects.all()})
             )
