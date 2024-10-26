@@ -1,0 +1,35 @@
+version: '3'
+services:
+  web:
+    extends:
+      file: base-compose.yaml
+      service: web
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    env_file:
+      - ./.env.prod
+  db:
+    extends:
+      file: base-compose.yaml
+      service: db
+    env_file:
+      - ./.env.prod.db
+  nginx-proxy:
+    extends:
+      file: base-compose.yaml
+      service: nginx-proxy
+  acme-companion:
+    extends:
+      file: base-compose.yaml
+      service: acme-companion
+    env_file:
+      - ./.env.prod.proxy-companion
+
+volumes:
+  prod-data:
+  static_volume:
+  certs:
+  html:
+  vhost:
+  acme:
