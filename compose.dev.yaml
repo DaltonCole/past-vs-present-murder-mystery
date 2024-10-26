@@ -5,12 +5,12 @@ services:
       file: base-compose.yaml
       service: web
     build:
-      context: .
+      context: ./murder_mystery
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/app
-      - ./staticfiles:/home/app/web/staticfiles
+      - ./murder_mystery/:/app
+      - ./murder_mystery/staticfiles:/home/app/web/staticfiles
     ports:
       - "8000:8000"
     env_file:
