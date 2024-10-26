@@ -37,7 +37,7 @@
     },
     {
         "model": "bonus_points.BonusPoint",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "amount": 1,
             "reason": "For Knowing Daltie's favorite animal!",

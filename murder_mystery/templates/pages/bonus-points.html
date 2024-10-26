@@ -1,3 +1,8 @@
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
+
+{% block pages %}
+
 <h1>Bonus Points</h1>
 
 <p id="bonus-status"></p>
@@ -13,4 +18,5 @@
 <br/>
 <p id="remaining-bonuses"></p>
 
-<button class="btn btn-primary" hx-get="/bonus_points/remaining" hx-trigger="every 2s" hx-target="#remaining-bonuses" style="display: none;">TEST</button>
+<button class="btn btn-primary" hx-get="/bonus_points/remaining" hx-trigger="load, every 2s" hx-target="#remaining-bonuses" style="display: none;">TEST</button>
+{% endblock %}

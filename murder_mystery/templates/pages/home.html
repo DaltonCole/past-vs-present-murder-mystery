@@ -1,42 +1,29 @@
-{% extends "base.html" %}
-{% load static %}
-{% block title %}- Home{% endblock %}
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
 
-{% block content %}
-{# User has to be logged in #}
-{% if not user.is_authenticated %}
+{% block pages %}
+<h1>Clue</h1>
 
-<p>You are not logged in</p>
-<a href="{% url 'login' %}">Log In</a>
+<!-- BEGIN Clue -->
+<p>Hint 1: {{ next_clue.hint1 }}</p>
+<p id="hint2">Hint 2:
+    {{ next_clue.hint2 }} {% if next_clue.hint2 == '' %}
+    <button class="btn btn-primary" hx-post="/teams/clue_hint/" hx-trigger="click" hx-target="#hint2" hx-vals='{"hint": "2"}'>Unlock for -{{ hint_cost }} points</button>
+{% endif %}</p>
 
-{% else %}
+{# TODO: Only make hint3 button visible if hint2 is revealed #}
+<p id="hint3">Hint 3:
+    {{ next_clue.hint3 }} {% if next_clue.hint3 == '' %}
+    <button class="btn btn-primary" hx-post="/teams/clue_hint/" hx-trigger="click" hx-target="#hint3" hx-vals='{"hint": "3"}'>Unlock for -{{ hint_cost }} points</button>
+{% endif %}</p>
+<!-- END Clue -->
 
-<p>Hi {{ user.username }} - {{ character.real_name }}!</p>
-
-<!-- Page tabs
-<script src="{% static 'pages/js/tabs.js' %}" async></script>
-<link rel="stylesheet" type="character/css" href="{% static 'pages/css/pages.css' %}">
--->
-<nav>
-  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-    <button class="nav-link active" id="nav-clue-tab" data-bs-toggle="tab" data-bs-target="#nav-clue" type="button" role="tab" aria-controls="nav-clue" aria-selected="true">Clue</button>
-    <button class="nav-link" id="nav-found-clues-tab" data-bs-toggle="tab" data-bs-target="#nav-found-clues" type="button" role="tab" aria-controls="nav-found-clues" aria-selected="false">Found Clues</button>
-    <button class="nav-link" id="nav-solution-tab" data-bs-toggle="tab" data-bs-target="#nav-solution" type="button" role="tab" aria-controls="nav-solution" aria-selected="true">Solution</button>
-    <button class="nav-link" id="nav-score-tab" data-bs-toggle="tab" data-bs-target="#nav-score" type="button" role="tab" aria-controls="nav-score" aria-selected="false">Score</button>
-    <button class="nav-link" id="nav-bonus-points-tab" data-bs-toggle="tab" data-bs-target="#nav-bonus-points" type="button" role="tab" aria-controls="nav-bonus-points" aria-selected="false">Bonus Points</button>
-  </div>
-</nav>
-<div class="tab-content" id="nav-tabContent">
-  <div class="tab-pane fade show active" id="nav-clue" role="tabpanel" aria-labelledby="nav-clue-tab">{% include 'pages/clue.html' %}</div>
-  <div class="tab-pane fade" id="nav-found-clues" role="tabpanel" aria-labelledby="nav-found-clues-tab">{% include 'pages/found-clues.html' %}</div>
-  <div class="tab-pane fade" id="nav-solution" role="tabpanel" aria-labelledby="nav-solution-tab">{% include 'pages/solution.html' %}</div>
-  <div class="tab-pane fade" id="nav-score" role="tabpanel" aria-labelledby="nav-score-tab">{% include 'pages/score.html' %}</div>
-  <div class="tab-pane fade" id="nav-bonus-points" role="tabpanel" aria-labelledby="nav-bonus-points-tab">{% include 'pages/bonus-points.html' %}</div>
-</div>
-<!-- TODO: REMOVE -->
-<form action="{% url 'logout' %}" method="post">
-  {% csrf_token %}
-  <button type="submit">Log Out</button>
+<!-- BEGIN Submit Clue -->
+<p>{{ incorrect }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Submit</button>
 </form>
-{% endif %}
+<!-- END Submit Clue -->
 {% endblock %}

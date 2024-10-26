@@ -16,7 +16,7 @@ from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
 from teams.scripts.get_team import get_team
 
-def found_clues(request):
+def found_clues_htmx(request):
     character = Character.objects.get(username=request.user.id)
     team = get_team(character)
     solved_clues = get_solved_clues(team)
@@ -27,7 +27,7 @@ def found_clues(request):
         response += f'<tr><td scope="row">{i+1}</td><td>{story_clue}</td></tr>'
     return HttpResponse(response)
 
-def score(request):
+def score_htmx(request):
     character = Character.objects.get(username=request.user.id)
     team = get_team(character)
     total_points, points_reason = calculate_team_score(team)
@@ -51,27 +51,12 @@ def home(request):
     if len(Team.objects.all()) == 0:
         return render(request, 'pages/game-has-not-started.html', context)
 
-    # --- Actions --- #
-    if 'action' in request.POST.keys():
-        if 'submit-clue' == request.POST['action']:
-            # TODO: If guess is correct, do not add a try (i.e. correct solution does not add a tries)
-            pass
-
-        if 'submit-final-answer' == request.POST['action']:
-            pass
-
     # --- Get Game State --- #
     # Get team
-    context['team'] = get_team(context['character'])
-
-    # Get score
-    context['total_points'], context['points_reason'] = calculate_team_score(context['team'])
-
-    # Get solved clues
-    context['solved_clues'] = get_solved_clues(context['team'])
+    team = get_team(context['character'])
 
     # Get next clue
-    next_clue = get_next_clue(context['team'])
+    next_clue = get_next_clue(team)
     context['next_clue'] = team_to_clue_to_clue_context(next_clue) if next_clue is not None else None
 
     # Hint point deduction
@@ -116,13 +101,22 @@ def home(request):
 
         context['form'] = form
 
-    else:
-        # TODO - Allow the user to make a final guess
-        context['final_guess'] = True
+    return render(request, 'pages/home.html', context)
 
+
+@login_required(login_url='accounts/signup')
+def found_clues(request):
+    context = {}
+    return render(request, 'pages/found-clues.html', context)
+
+
+@login_required(login_url='accounts/signup')
+def solution(request):
+    context = {}
     # --- Final Solution --- #
+    team = get_team(Character.objects.get(username=request.user.id))
     pre_populate_solution_form = {
-            'solution': Solution.objects.get(team=context['team']).solution if len(Solution.objects.filter(team=context['team'])) > 0 else ''
+            'solution': Solution.objects.get(team=team).solution if len(Solution.objects.filter(team=team)) == 1 else ''
             }
     solution_form = SolutionForm(
             request.POST or None,
@@ -131,7 +125,7 @@ def home(request):
 
     if request.method == 'POST' and solution_form.is_valid():
         try:
-            solution = Solution.objects.get(team=context['team'])
+            solution = Solution.objects.get(team=team)
             solution.solution = solution_form.cleaned_data['solution']
         except:
             solution = solution_form.save(commit=False)
@@ -140,8 +134,20 @@ def home(request):
 
     context['solution'] = solution_form
 
+    return render(request, 'pages/solution.html', context)
+
+@login_required(login_url='accounts/signup')
+def score(request):
+    context = {}
+
+    return render(request, 'pages/score.html', context)
+
+
+@login_required(login_url='accounts/signup')
+def bonus_points(request):
+    context = {}
+
     # --- Bonus Point Submission --- #
     context['bonus_point_form'] = BonusPointForm()
 
-
-    return render(request, 'pages/home.html', context)
+    return render(request, 'pages/bonus-points.html', context)

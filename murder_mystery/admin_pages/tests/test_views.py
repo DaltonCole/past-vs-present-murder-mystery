@@ -46,7 +46,7 @@ class TestConsoleTests(ConsoleTests):
     def test_add_default_character(self):
         num_users = len(User.objects.all())
         num_chars = len(Character.objects.all())
-        response = self.client.post(reverse(self.reverse), {'action': 'add-default-character'}, follow=True)
+        response = self.client.post(reverse(self.reverse), {'action': 'add-default-characters'}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(User.objects.all()), num_users + 1)
-        self.assertEqual(len(Character.objects.all()), num_chars + 1)
+        self.assertEqual(len(User.objects.all()), num_users + 10)
+        self.assertEqual(len(Character.objects.all()), num_chars + 10)

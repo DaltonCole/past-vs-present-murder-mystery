@@ -1,4 +1,9 @@
-<h1>Score</h1>
+{% extends "pages/base.html" %}
+{% block title %}- Found Clues{% endblock %}
+
+{% block pages %}
+
+<h1>Found Clues</h1>
 
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -11,4 +16,6 @@
     </tbody>
 </table>
 
-<button class="btn btn-primary" hx-get="/found_clues" hx-trigger="every 2s" hx-target="#found-clues" style="display: none;">TEST</button>
+<button class="btn btn-primary" hx-get="/found_clues_htmx" hx-trigger="load, every 2s" hx-target="#found-clues" style="display: none;">TEST</button>
+
+{% endblock %}

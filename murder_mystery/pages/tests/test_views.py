@@ -72,9 +72,7 @@ class HomeDuringGameTests(MakeTeams):
     def test_context(self):
         '''Verify context'''
         # TODO
-        with self.assertLogs(level='INFO') as lc:
-            self.response = self.client.post(self.reverse, {'action': 'start-game'}, follow=True)
+        self.response = self.client.post(self.reverse, {'action': 'start-game'}, follow=True)
         # Check status code
         self.assertEqual(self.response.status_code, 200)
-
 

@@ -12,6 +12,7 @@ logger = logging.getLogger(__name__)
 
 # Create your views here.
 def clue_hint(request):
+    # TODO: Make it so the other character gets the hint update - i.e. lots of fixes needed
     character = Character.objects.get(username=request.user.id)
     team = get_team(character)
     clue = get_next_clue(team)
