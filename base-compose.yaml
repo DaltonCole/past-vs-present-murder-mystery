@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile.prod
+      dockerfile: Dockerfile
     container_name: murder-mystery-backend
     command: gunicorn murder_mystery.wsgi:application --bind 0.0.0.0:8000
     volumes:

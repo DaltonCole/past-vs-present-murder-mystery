@@ -9,7 +9,7 @@ services:
       dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./murder_mystery/:/app
+      - ./murder_mystery/:/home/app/web
       - ./murder_mystery/staticfiles:/home/app/web/staticfiles
     ports:
       - "8000:8000"
