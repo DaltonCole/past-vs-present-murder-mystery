@@ -24,7 +24,7 @@ def found_clues_htmx(request):
     response = ''
     for i, clue in enumerate(solved_clues):
         story_clue = clue.location_clue.story_clue if clue.location_clue is not None else clue.character_clue.story_clue
-        response += f'<tr><td scope="row">{i+1}</td><td>{story_clue}</td></tr>'
+        response += f'<tr><td scope="row">{i+1}</td><td>{story_clue.clue}</td></tr>'
     return HttpResponse(response)
 
 def score_htmx(request):
