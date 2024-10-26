@@ -1,6 +1,6 @@
 [
     {
-        "model": "text_clues.OccupationFlavorText",
+        "model": "character_clues.OccupationFlavorText",
         "pk": 0,
         "fields": {
             "flavor_text": "A charming {occupation} holds the riddle to the {char.past_or_future}"

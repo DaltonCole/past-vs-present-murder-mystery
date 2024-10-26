@@ -1,13 +1,15 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
+from django.shortcuts import render
 
+from admin_pages.scripts.make_unique_default_users_and_chars import (
+    make_unique_default_users_and_chars,
+)
 from admin_pages.scripts.start_game import start_game
-from admin_pages.scripts.make_teams import make_teams
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
-
+from bonus_points.models import TeamToBonusPoint
 from characters.models import Character
-from teams.models import Team
+from teams.models import Team, TeamToClue
 
 def action(request):
     '''Helper function for handling the "action" POST request'''
@@ -19,25 +21,40 @@ def action(request):
             context['action'] = start_game()
 
         # Test console actions
-        if 'add-default-character' == request.POST['action']:
-            user, char = make_n_users_and_characters(1)
-            save_all(user)
-            save_all(char)
-            context['action'] = 'Added 1 user'
+        if 'add-default-characters' == request.POST['action']:
+            make_unique_default_users_and_chars()
+            context['action'] = 'Added 10 user'
 
         if 'clear-characters' == request.POST['action']:
-            teams = Character.objects.all()
-            num_teams = len(teams)
-            for char in teams:
-                user = User.objects.get(username=char.username)
+            users = User.objects.exclude(id=request.user.id)
+            count = 0
+            for user in users:
                 user.delete()
-            context['action'] = f'Removed {num_teams - len(Character.objects.all())} Users and Characters'
+                count += 1
+            context['action'] = f'Removed {count} Users'
 
         if 'clear-teams' == request.POST['action']:
             teams = Team.objects.all()
             num_teams = len(teams)
             teams.delete()
             context['action'] = f'Removed {num_teams - len(Team.objects.all())} Teams'
+
+        if 'reset-hints' == request.POST['action']:
+            for clue in TeamToClue.objects.all():
+                clue.location_hints = 0
+                clue.save()
+            context['action'] = f'Reset location hints'
+
+        if 'reset-finds' == request.POST['action']:
+            for clue in TeamToClue.objects.all():
+                clue.location_hints = 0
+                clue.found = False
+                clue.save()
+            context['action'] = f'Reset clue finds and hints'
+
+        if 'reset-bonus-points' == request.POST['action']:
+            TeamToBonusPoint.objects.all().delete()
+            context['action'] = f'Reset bonus points'
 
     return context
 
@@ -49,7 +66,8 @@ def console(request):
 
     return render(request, 'admin_pages/console.html', context)
 
-@staff_member_required
+# TODO: Uncomment
+#@staff_member_required
 def test_console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:test-console'

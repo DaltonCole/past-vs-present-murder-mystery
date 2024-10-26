@@ -1,0 +1,24 @@
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
+
+{% block pages %}
+
+<style>
+#id_solution {
+    width: 100%
+}
+</style>
+
+<h1>Solution</h1>
+
+<!-- BEGIN Submit Clue -->
+<div class="container-fluid">
+<p>Once you've solved the mystery, enter the solution here! How did the utopian past become this dystopian future? More (relevant) details, the better! Boss will score these once your shift is over.</p>
+<form method="post">
+    {% csrf_token %}
+    {{ solution.as_p }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+</div>
+<!-- END Submit Clue -->
+{% endblock %}

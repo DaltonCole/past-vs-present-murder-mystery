@@ -1,0 +1,22 @@
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
+
+{% block pages %}
+
+<h1>Bonus Points</h1>
+
+<p id="bonus-status"></p>
+<!-- BEGIN Submit Bonus Points -->
+<p>{{ incorrect }}</p>
+<form hx-post="/bonus_points/submission" hx-target="#bonus-status">
+    {% csrf_token %}
+    {{ bonus_point_form.as_p }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<!-- END Submit Bonus Points -->
+<br/>
+<p id="remaining-bonuses"></p>
+
+<button class="btn btn-primary" hx-get="/bonus_points/remaining" hx-trigger="load, every 2s" hx-target="#remaining-bonuses" style="display: none;">TEST</button>
+{% endblock %}

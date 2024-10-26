@@ -1,0 +1,29 @@
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
+
+{% block pages %}
+<h1>Clue</h1>
+
+<!-- BEGIN Clue -->
+<p>Hint 1: {{ next_clue.hint1 }}</p>
+<p id="hint2">Hint 2:
+    {{ next_clue.hint2 }} {% if next_clue.hint2 == '' %}
+    <button class="btn btn-primary" hx-post="/teams/clue_hint/" hx-trigger="click" hx-target="#hint2" hx-vals='{"hint": "2"}'>Unlock for -{{ hint_cost }} points</button>
+{% endif %}</p>
+
+{# TODO: Only make hint3 button visible if hint2 is revealed #}
+<p id="hint3">Hint 3:
+    {{ next_clue.hint3 }} {% if next_clue.hint3 == '' %}
+    <button class="btn btn-primary" hx-post="/teams/clue_hint/" hx-trigger="click" hx-target="#hint3" hx-vals='{"hint": "3"}'>Unlock for -{{ hint_cost }} points</button>
+{% endif %}</p>
+<!-- END Clue -->
+
+<!-- BEGIN Submit Clue -->
+<p>{{ incorrect }}</p>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+<!-- END Submit Clue -->
+{% endblock %}

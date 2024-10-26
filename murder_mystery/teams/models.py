@@ -1,7 +1,8 @@
 from django.db import models
+
+from character_clues.models import CharacterClue
 from characters.models import Character
-from video_clues.models import VideoClue
-from text_clues.models import TextClue
+from location_clues.models import LocationClue
 
 # Create your models here.
 class Team(models.Model):
@@ -40,14 +41,14 @@ class TeamToClue(models.Model):
     tries = models.SmallIntegerField(
             default=0,
             )
-    video_clue = models.ForeignKey(
-           VideoClue,
+    location_clue = models.ForeignKey(
+           LocationClue,
            on_delete=models.CASCADE,
            blank=True,
            null=True,
             )
-    text_clue = models.ForeignKey(
-           TextClue,
+    character_clue = models.ForeignKey(
+           CharacterClue,
            on_delete=models.CASCADE,
            blank=True,
            null=True,

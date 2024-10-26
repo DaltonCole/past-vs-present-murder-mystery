@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
+
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -36,8 +37,9 @@ INSTALLED_APPS = [
     # Local
     'characters.apps.CharactersConfig',
     'teams.apps.TeamsConfig',
-    'video_clues.apps.VideoCluesConfig',
-    'text_clues.apps.TextCluesConfig',
+    'location_clues.apps.LocationCluesConfig',
+    'character_clues.apps.CharacterCluesConfig',
+    'story_clues.apps.StoryCluesConfig',
     'bonus_points.apps.BonusPointsConfig',
     'solutions.apps.SolutionsConfig',
 
@@ -144,6 +146,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
 
 
 # Default primary key field type

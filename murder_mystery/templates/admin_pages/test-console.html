@@ -13,12 +13,18 @@
 <!-- BEGIN Perform Actions-->
 <form action="{% url reverse %}" method="POST">
     {% csrf_token %}
-    <!-- Start Game -->
-    <button type="submit" name="action" value="add-default-character">Add default Character</button>
+    <!-- Add Default Characters -->
+    <button type="submit" name="action" value="add-default-characters">Add default Characters</button>
     <!-- Clear Characters + Users -->
     <button type="submit" name="action" value="clear-characters">Clear Users and Characters</button>
     <!-- Clear Teams -->
     <button type="submit" name="action" value="clear-teams">Clear Teams</button>
+    <!-- Reset hints -->
+    <button type="submit" name="action" value="reset-hints">Reset Hints</button>
+    <!-- Reset clues -->
+    <button type="submit" name="action" value="reset-finds">Reset Finds</button>
+    <!-- Reset bonus points -->
+    <button type="submit" name="action" value="reset-bonus-points">Reset Bonus Points</button>
 </form>
 <!-- END Perform Actions-->
 

@@ -1,0 +1,21 @@
+{% extends "pages/base.html" %}
+{% block title %}- Clue{% endblock %}
+
+{% block pages %}
+
+<h1>Score</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Points</th>
+            <th scope="col">Reason</th>
+        </tr>
+    </thead>
+    <tbody id="score">
+    </tbody>
+</table>
+
+<button class="btn btn-primary" hx-get="/score_htmx" hx-trigger="load, every 2s" hx-target="#score" style="display: none;">TEST</button>
+
+{% endblock %}

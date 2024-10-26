@@ -1,19 +1,22 @@
 import logging
 
 from admin_pages.scripts.assign_clues_to_teams import assign_clues_to_teams
-from admin_pages.scripts.make_text_clue import make_text_clue
+from admin_pages.scripts.make_character_clue import make_character_clue
+from admin_pages.scripts.make_location_clue import make_location_clue
 from admin_pages.tests.test_scripts import MakeTeams
 from bonus_points.models import BonusPoint
 from bonus_points.scripts.assign_bonus_points_to_team import assign_bonus_points_to_team
+from characters.models import Character
+from location_clues.models import Location, LocationClue
 from pages.scripts.calculate_team_score import (
     INCORRECT_GUESS_DEDUCTION,
     POINTS_PER_CLUE,
     calculate_team_score,
 )
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
+from story_clues.models import StoryClue
 from teams.models import Team, TeamToClue
 from teams.scripts.get_team_clues_in_order import get_team_clues_in_order
-from text_clues.models import StoryTextClue
 
 # Create your tests here.
 logging.basicConfig(level=logging.INFO)
@@ -22,10 +25,9 @@ class CalculateTeamScoreTests(MakeTeams):
     fixtures = ['fixtures/bonus_points.json',
                 'fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
-
 
     def setUp(self):
         with self.assertLogs(level='INFO') as _:
@@ -166,73 +168,75 @@ class CalculateTeamScoreTests(MakeTeams):
             self.assertEqual(points, expected_total_points)
 
 
-class TeamToClueToClueContextTests(MakeTeams):
+class TeamToClueToClueConcharacterTests(MakeTeams):
     fixtures = ['fixtures/bonus_points.json',
                 'fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
-    def test_video_clue(self):
-        with self.assertLogs(level='INFO') as _:
-            self.make_teams()
-            assign_clues_to_teams()
-            team_to_video_clue = TeamToClue.objects.filter(video_clue__pk=0)[0]
-            # 1 hint
-            clue_context = team_to_clue_to_clue_context(team_to_video_clue)
-            self.assertEqual(clue_context['clue-type'], 'location')
-            self.assertEqual(clue_context['hint1'], 'test') # TODO - update when real fixture goes in
-            self.assertEqual(clue_context['hint2'], '')
-            self.assertEqual(clue_context['hint3'], '')
-            # 1 hint
-            team_to_video_clue.location_hints += 1
-            team_to_video_clue.save()
-            clue_context = team_to_clue_to_clue_context(team_to_video_clue)
-            self.assertEqual(clue_context['clue-type'], 'location')
-            self.assertEqual(clue_context['hint1'], 'test') # TODO - update when real fixture goes in
-            self.assertEqual(clue_context['hint2'], 'test') # TODO - update when real fixture goes in
-            self.assertEqual(clue_context['hint3'], '')
-            # 2 hints
-            team_to_video_clue.location_hints += 1
-            team_to_video_clue.save()
-            clue_context = team_to_clue_to_clue_context(team_to_video_clue)
-            self.assertEqual(clue_context['clue-type'], 'location')
-            self.assertEqual(clue_context['hint1'], 'test') # TODO - update when real fixture goes in
-            self.assertEqual(clue_context['hint2'], 'test') # TODO - update when real fixture goes in
-            self.assertEqual(clue_context['hint3'], 'test') # TODO - update when real fixture goes in
-
-
-    def test_text_clue(self):
+    def test_location_clue(self):
         self.make_teams()
         team = Team.objects.all()[0]
-        story_clue = StoryTextClue.objects.all()[0]
-        text_clue = make_text_clue(story_clue, team)
-        team_to_text_clue = TeamToClue(team=team, order=1, text_clue=text_clue)
-        ref_char = text_clue.character_id
+        story_clue = StoryClue.objects.all()[0]
+        location = Location.objects.get(pk=0)
+        location_clue = make_location_clue(story_clue=story_clue, location=location)
+        team_to_location_clue = TeamToClue(team=team, order=1, location_clue=location_clue)
+        # 1 hint
+        clue_context = team_to_clue_to_clue_context(team_to_location_clue)
+        self.assertEqual(clue_context['clue-type'], 'location')
+        self.assertEqual(clue_context['hint1'], 'Here, we use and store ancient power')
+        self.assertEqual(clue_context['hint2'], '')
+        self.assertEqual(clue_context['hint3'], '')
+        # 1 hint
+        team_to_location_clue.location_hints += 1
+        team_to_location_clue.save()
+        clue_context = team_to_clue_to_clue_context(team_to_location_clue)
+        self.assertEqual(clue_context['clue-type'], 'location')
+        self.assertEqual(clue_context['hint1'], 'Here, we use and store ancient power')
+        self.assertEqual(clue_context['hint2'], 'Vroom Vroom')
+        self.assertEqual(clue_context['hint3'], '')
+        # 2 hints
+        team_to_location_clue.location_hints += 1
+        team_to_location_clue.save()
+        clue_context = team_to_clue_to_clue_context(team_to_location_clue)
+        self.assertEqual(clue_context['clue-type'], 'location')
+        self.assertEqual(clue_context['hint1'], 'Here, we use and store ancient power')
+        self.assertEqual(clue_context['hint2'], 'Vroom Vroom')
+        self.assertEqual(clue_context['hint3'], 'Look up')
+
+
+    def test_character_clue(self):
+        self.make_teams()
+        team = Team.objects.all()[0]
+        ref_char = Character.objects.all()[3]
+        story_clue = StoryClue.objects.all()[0]
+        character_clue = make_character_clue(story_clue, ref_char)
+        team_to_character_clue = TeamToClue(team=team, order=1, character_clue=character_clue)
         ref_char.occupation = 'Sad person'
         ref_char.descriptor1 = 'Apples'
         ref_char.descriptor2 = 'Banana'
         ref_char.descriptor3 = 'Cake'
         ref_char.save()
         # 1 hint
-        clue_context = team_to_clue_to_clue_context(team_to_text_clue)
+        clue_context = team_to_clue_to_clue_context(team_to_character_clue)
         self.assertEqual(clue_context['clue-type'], 'person')
         self.assertIn('Apples', clue_context['hint1'])
         self.assertEqual(clue_context['hint2'], '')
         self.assertEqual(clue_context['hint3'], '')
         # 1 hint
-        team_to_text_clue.location_hints += 1
-        team_to_text_clue.save()
-        clue_context = team_to_clue_to_clue_context(team_to_text_clue)
+        team_to_character_clue.location_hints += 1
+        team_to_character_clue.save()
+        clue_context = team_to_clue_to_clue_context(team_to_character_clue)
         self.assertEqual(clue_context['clue-type'], 'person')
         self.assertIn('Apples', clue_context['hint1'])
         self.assertIn('Banana', clue_context['hint2'])
         self.assertEqual(clue_context['hint3'], '')
         # 2 hints
-        team_to_text_clue.location_hints += 1
-        team_to_text_clue.save()
-        clue_context = team_to_clue_to_clue_context(team_to_text_clue)
+        team_to_character_clue.location_hints += 1
+        team_to_character_clue.save()
+        clue_context = team_to_clue_to_clue_context(team_to_character_clue)
         self.assertEqual(clue_context['clue-type'], 'person')
         self.assertIn('Apples', clue_context['hint1'])
         self.assertIn('Banana', clue_context['hint2'])

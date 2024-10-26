@@ -19,11 +19,13 @@ from django.urls import include, path
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    #path("", include("characters.urls")),
-    path("", include('pages.urls')),
-    path("characters/", include("characters.urls")),
-    path("admin/", include('admin_pages.urls')),
-    path("admin/", admin.site.urls),
+    #path('', include('characters.urls')),
+    path('', include('pages.urls')),
+    path('characters/', include('characters.urls')),
+    path('teams/', include('teams.urls')),
+    path('bonus_points/', include('bonus_points.urls')),
+    path('admin/', include('admin_pages.urls')),
+    path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')), # Used for character creation
     #path('accounts/', include('characters.urls')), # Used for character creation
     path('accounts/', include('django.contrib.auth.urls')), # Used for character creation

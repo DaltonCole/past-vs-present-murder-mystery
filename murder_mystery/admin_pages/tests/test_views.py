@@ -1,10 +1,12 @@
+import logging
+
+from django.contrib.auth.models import User
 from django.shortcuts import reverse
 from django.test import TestCase
-from django.contrib.auth.models import User
-import logging
 
 from characters.models import Character
 from teams.models import Team
+
 from .helpers import make_admin_user, make_n_users_and_characters, save_all
 from .test_scripts import TeamToClueEndState
 
@@ -15,8 +17,8 @@ logging.basicConfig(level=logging.INFO)
 class ConsoleTests(TeamToClueEndState):
     fixtures = ['fixtures/descriptor_flavor_text.json',
                 'fixtures/occupation_flavor_text.json',
-                'fixtures/story_text_clue.json',
-                'fixtures/video_clues.json',
+                'fixtures/story_clue.json',
+                'fixtures/location.json',
                 ]
 
     def setUp(self):
@@ -44,7 +46,7 @@ class TestConsoleTests(ConsoleTests):
     def test_add_default_character(self):
         num_users = len(User.objects.all())
         num_chars = len(Character.objects.all())
-        response = self.client.post(reverse(self.reverse), {'action': 'add-default-character'}, follow=True)
+        response = self.client.post(reverse(self.reverse), {'action': 'add-default-characters'}, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(User.objects.all()), num_users + 1)
-        self.assertEqual(len(Character.objects.all()), num_chars + 1)
+        self.assertEqual(len(User.objects.all()), num_users + 10)
+        self.assertEqual(len(Character.objects.all()), num_chars + 10)

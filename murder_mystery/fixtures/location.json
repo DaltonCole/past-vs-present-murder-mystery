@@ -1,0 +1,168 @@
+[
+    {
+        "model": "location_clues.Location",
+        "pk": 0,
+        "fields": {
+            "location": "a",
+            "where": "Garage - Clue is hidden in the black storage areas above head, near entrance so they don't have to walk far",
+            "location_hint1": "Here, we use and store ancient power",
+            "location_hint2": "Vroom Vroom",
+            "location_hint3": "Look up"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 1,
+        "fields": {
+            "location": "b",
+            "where": "Guest Bedroom - Under the bed",
+            "location_hint1": "Where the departed slept",
+            "location_hint2": "Zzz (Literally)",
+            "location_hint3": " I miss Henry, my old roommate that stayed in the bedroom downstairs."
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 2,
+        "fields": {
+            "location": "c",
+            "where": "Guest Bedroom - Clue is tapped to the bottom side of the closet shelf",
+            "location_hint1": "A pretty good place to store a skeleton",
+            "location_hint2": "TODO",
+            "location_hint3": "TODO"
+        }
+    },
+
+    {
+        "model": "location_clues.Location",
+        "pk": 3,
+        "fields": {
+            "location": "d",
+            "where": "PhD Diploma - Tapped onto the (back of the) frame",
+            "location_hint1": "Time wins all battles",
+            "location_hint2": " I see so much black, yet, I know, on the other side, there is a rainbow",
+            "location_hint3": "Dr. Cole"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 4,
+        "fields": {
+            "location": "e",
+            "where": "Stairwell window into dinning room",
+            "location_hint1": "A window without glass",
+            "location_hint2": " Height isn't everything - but some of it definitely isn't bad",
+            "location_hint3": "This is a great spot to watch people eat. Nom nom nom"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 5,
+        "fields": {
+            "location": "f",
+            "where": "Front side of whiteboard in a corner",
+            "location_hint1": "Rules & Regulations",
+            "location_hint2": "Please read the rules & regulations",
+            "location_hint3": "Go into the living room and read the rules & regulations of this game"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 6,
+        "fields": {
+            "location": "g",
+            "where": "Tapped to the top of the recycling lid - The side that says classified or sci or whatever",
+            "location_hint1": "You'll need a clearance to view me",
+            "location_hint2": "I consume metal but never glass",
+            "location_hint3": "Team Rocket blasting off again!"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 7,
+        "fields": {
+            "location": "h",
+            "where": "Laundry room - on the wall behind shelves of the raspberry pi server",
+            "location_hint1": "Beep Boop",
+            "location_hint2": "\"I’m driving fast, but the truth is far, In a place where clothes spin, beneath the radar.\"",
+            "location_hint3": "\"A silent hum where the circuits pulse, Seek the shadows where the secrets convulse. The distance hides where the echoes play, Look beyond the surface to uncover the way.\" - ChatGPT 4o mini"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 8,
+        "fields": {
+            "location": "i",
+            "where": "Laundry room - On laundry pods",
+            "location_hint1": "Liquid poison",
+            "location_hint2": "Round and round - with some beeps thrown in",
+            "location_hint3": "Taste the rainbow - but maybe don't"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 9,
+        "fields": {
+            "location": "j",
+            "where": "Underneath the rug in the living room",
+            "location_hint1": "Where daughter and man's best friend becomes one",
+            "location_hint2": "Seven sides makes a circle (TODO: check fan blade count) but I don't need any blades",
+            "location_hint3": "What's blue and white and should really be bigger?"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 10,
+        "fields": {
+            "location": "k",
+            "where": "On the huel shelf",
+            "location_hint1": "I am fuel for the human body",
+            "location_hint2": "I hold the essentials, spices, and more, often tucked away behind a closed door.",
+            "location_hint3": "I give The Boss life on a daily basis. He often cares a cup with my name on it."
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 11,
+        "fields": {
+            "location": "l",
+            "where": "Behind the sofa chair upstairs",
+            "location_hint1": "Alone I sit, above others",
+            "location_hint2": "Everything the light touches can be yours, but you will need base access to get there",
+            "location_hint3": "At least you will be conformable in time-out in the corner"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 12,
+        "fields": {
+            "location": "m",
+            "where": "Underneath the front door porch mat (inside):",
+            "location_hint1": "Please tread on me",
+            "location_hint2": "I am first to see you and last to leave",
+            "location_hint3": "I may have a dirty shoe fetish"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 13,
+        "fields": {
+            "location": "n",
+            "where": "Fan switch in living room (small letter tapped to it)",
+            "location_hint1": "Push me, and then just touch me, till I can get my satisfaction",
+            "location_hint2": "You spin me right 'round, baby; Right 'round, like a record, baby; Right 'round, 'round, 'round",
+            "location_hint3": "<a href=\"https://www.youtube.com/watch?v=h6k9_IgBj8Q\">This video might help find this clue</a> TODO: make sure hyperlink works"
+        }
+    },
+    {
+        "model": "location_clues.Location",
+        "pk": 14,
+        "fields": {
+            "location": "o",
+            "where": "In the corner overlooking the staircase",
+            "location_hint1": "Humpty Dumpty sat on a wall, Humpty Dumpty had a great fall;",
+            "location_hint2": "Arriba. Encima. Piso Superior.",
+            "location_hint3": "I will look down upon thee until you are able to rise to the occasion"
+        }
+    }
+]

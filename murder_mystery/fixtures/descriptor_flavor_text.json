@@ -1,20 +1,20 @@
 [
     {
-        "model": "text_clues.DescriptorFlavorText",
+        "model": "character_clues.DescriptorFlavorText",
         "pk": 0,
         "fields": {
             "flavor_text": "They're a {description} good fellow!"
         }
     },
     {
-        "model": "text_clues.DescriptorFlavorText",
+        "model": "character_clues.DescriptorFlavorText",
         "pk": 1,
         "fields": {
             "flavor_text": "They're a {description} good fellow!"
         }
     },
     {
-        "model": "text_clues.DescriptorFlavorText",
+        "model": "character_clues.DescriptorFlavorText",
         "pk": 2,
         "fields": {
             "flavor_text": "They're a {description} good fellow!"
