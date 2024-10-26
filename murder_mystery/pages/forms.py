@@ -1,9 +1,8 @@
 import string
 
+from characters.models import Character
 from django import forms
 from django.contrib.auth.models import User
-
-from characters.models import Character
 
 class LocationClueForm(forms.Form):
     answer = forms.CharField(
@@ -14,5 +13,12 @@ class LocationClueForm(forms.Form):
 class CharacterClueForm(forms.Form):
     answer = forms.CharField(
             label='Answer',
-            #widget=forms.Select(choices={f'{char.id}': f'{char.character_name} - {char.real_name}' for char in Character.objects.all()})
             )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['answer'].widget = forms.Select(
+                choices={
+                    f'{char.id}': f'{char.character_name} - {char.real_name}' for char in Character.objects.all().order_by('character_name')
+                    }
+                )
