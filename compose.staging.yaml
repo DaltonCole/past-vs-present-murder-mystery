@@ -5,16 +5,18 @@ services:
       file: base-compose.yaml
       service: web
     build:
-      context: .
+      context: ./murder_mystery
       dockerfile: Dockerfile.prod
     env_file:
-      - ./.env.prod
+      - ./.env.staging
   db:
     extends:
       file: base-compose.yaml
       service: db
+    volumes:
+      - staging-data:/var/lib/postgresql/data
     env_file:
-      - ./.env.prod.db
+      - ./.env.staging.db
   nginx-proxy:
     extends:
       file: base-compose.yaml
@@ -24,10 +26,10 @@ services:
       file: base-compose.yaml
       service: acme-companion
     env_file:
-      - ./.env.prod.proxy-companion
+      - ./.env.staging.proxy-companion
 
 volumes:
-  prod-data:
+  staging-data:
   static_volume:
   certs:
   html:
