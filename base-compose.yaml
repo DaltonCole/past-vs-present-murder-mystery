@@ -1,0 +1,60 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: murder-mystery-backend
+    command: gunicorn murder_mystery.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    restart: always
+    expose:
+      - 8000
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:17
+    container_name: murder-mystery-postgres-db
+    restart: always
+    volumes:
+      - prod-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "db", "-p", "5432", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  nginx-proxy:
+    container_name: nginx-proxy
+    build: nginx
+    restart: always
+    ports:
+      - 443:443
+      - 80:80
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    depends_on:
+      - web
+  acme-companion:
+    image: nginxproxy/acme-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - certs:/etc/nginx/certs
+      - html:/usr/share/nginx/html
+      - vhost:/etc/nginx/vhost.d
+      - acme:/etc/acme.sh
+    depends_on:
+      - nginx-proxy
+
+volumes:
+  prod-data:
+  static_volume:
+  certs:
+  html:
+  vhost:
+  acme:

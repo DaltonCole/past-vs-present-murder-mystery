@@ -2,8 +2,10 @@ version: '3'
 services:
   test-backend:
     build:
-      context: .
+      context: ./murder_mystery
       dockerfile: Dockerfile
     container_name: murder_mystery_backend_test
+    environment:
+      DEBUG: "1"
 volumes:
   data:

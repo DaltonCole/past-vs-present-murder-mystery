@@ -21,3 +21,4 @@
 
 * If you run into a "Error response from daemon: network * not found" error try: `docker-compose up --force-recreate`
 * If you run into "no such table:" during make migrations, try: `python manage.py migrate --run-syncdb`
+* If you get something like "django.db.utils.ProgrammingError: relation "characters_character" does not exist" while creating a new database, in the root `urls.py` do `urlpatterns = []`

@@ -1,0 +1,30 @@
+version: '3'
+services:
+  web:
+    extends:
+      file: base-compose.yaml
+      service: web
+    build:
+      context: ./murder_mystery
+      dockerfile: Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./murder_mystery/:/home/app/web
+      - ./murder_mystery/staticfiles:/home/app/web/staticfiles
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env.dev
+  db:
+    extends:
+      file: base-compose.yaml
+      service: db
+    volumes:
+      - dev-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=hello_django_dev
+
+volumes:
+  dev-data:
