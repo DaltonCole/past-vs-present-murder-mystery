@@ -71,7 +71,7 @@
         "fields": {
             "location": "g",
             "where": "Tapped to the top of the recycling lid - The side that says classified or sci or whatever",
-            "location_hint1": "You'll need a clearance to view me",
+            "location_hint1": "You'll need a key to open me",
             "location_hint2": "I consume metal but never glass",
             "location_hint3": "Team Rocket blasting off again!"
         }

@@ -4,6 +4,8 @@
 
 {% block content %}
 <h2>Create Your Character</h2>
+<p>Use your real name. If you don't, you're just making my life harder as the DM and making the auto-generated clues not make sense. I'll delete the database that's hosted on my raspberry pi after this game anyways.</p>
+
 <form method="post">
   {% csrf_token %}
   {{ form.as_p }}
