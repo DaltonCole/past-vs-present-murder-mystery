@@ -4,6 +4,7 @@
 {% block title %}Admin Console{% endblock %}
 
 {% block content %}
+<div class="container-fluid">
 <!-- Report action performed -->
 {% if action %}
 <p>{{action}}</p>
@@ -33,8 +34,87 @@
 <div class="tab-content" id="myTabContent">
     {% for character, info in characters.items %}
     {% with name=character.username.username %}
-    <div class="tab-pane fade" id="c-{{name}}" role="tabpanel" aria-labelledby="c-{{name}}-tab">{{name}}</div>
-
+    <div class="tab-pane fade" id="c-{{name}}" role="tabpanel" aria-labelledby="c-{{name}}-tab">
+        <!-- Character Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Real Name</th>
+                    <th scope="col">Character Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">P/F</th>
+                    <th scope="col">Occupation</th>
+                    <th scope="col">Descriptor 1</th>
+                    <th scope="col">Descriptor 2</th>
+                    <th scope="col">Descriptor 3</th>
+                    <th scope="col">Solo</th>
+                    <th scope="col">Preferred Partner</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ character.real_name }}</td>
+                    <td>{{ character.character_name }}</td>
+                    <td>{{ character.username.username }}</td>
+                    <td>{{ character.past_or_future }}</td>
+                    <td>{{ character.occupation }}</td>
+                    <td>{{ character.descriptor1 }}</td>
+                    <td>{{ character.descriptor2 }}</td>
+                    <td>{{ character.descriptor3 }}</td>
+                    <td>{{ character.solo }}</td>
+                    <td>{{ character.preferred_partner.username }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Team Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">P Char</th>
+                    <th scope="col">F Char</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ info.team.past_character.real_name }}</td>
+                    <td>{{ info.team.future_character.real_name }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Clue Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Order</th>
+                    <th scope="col">Found</th>
+                    <th scope="col">Location Hints</th>
+                    <th scope="col">Tries</th>
+                    <th scope="col">Hint 1</th>
+                    <th scope="col">Hint 2</th>
+                    <th scope="col">Hint 3</th>
+                    <th scope="col">Story Clue</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for clue, hint in info.clues %}
+                <tr>
+                    <td>{{ clue.order }}</td>
+                    <td>{{ clue.found }}</td>
+                    <td>{{ clue.location_hints }}</td>
+                    <td>{{ clue.tries }}</td>
+                    <td>{{ hint.hint1 }}</td>
+                    <td>{{ hint.hint2_cheat }}</td>
+                    <td>{{ hint.hint3_cheat }}</td>
+                    {% if clue.location_clue %}
+                        <td>{{ clue.location_clue.story_clue.id }}</td>
+                    {% else %}
+                        <td>{{ clue.character_clue.story_clue.id }}</td>
+                    {% endif %}
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+    </div>
     {% endwith %}
     {% endfor %}
 </div>
@@ -49,4 +129,5 @@
 <!-- END logout -->
 {% endif %}
 {% block test-console %} {% endblock test-console %}
+</div>
 {% endblock content %}

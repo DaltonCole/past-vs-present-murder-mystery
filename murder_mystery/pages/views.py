@@ -1,9 +1,10 @@
-from bonus_points.forms import BonusPointForm
-from characters.models import Character
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+
+from bonus_points.forms import BonusPointForm
+from characters.models import Character
 from pages.forms import CharacterClueForm, LocationClueForm
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.calculate_team_score import HINT_DEDUCTION

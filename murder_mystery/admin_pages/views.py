@@ -10,6 +10,7 @@ from admin_pages.tests.helpers import make_n_users_and_characters, save_all
 from bonus_points.models import TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
+from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
 from teams.models import Team, TeamToClue
 from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
@@ -70,9 +71,10 @@ def stats(request):
     for character in Character.objects.all().order_by('real_name'):
         team = get_team(character)
         clues = get_team_clues_in_order(team)
+        hints = [team_to_clue_to_clue_context(clue) for clue in clues]
         characters[character] = {
                 'team': team,
-                'clues': clues,
+                'clues': zip(clues, hints),
                 }
 
     return {'characters': characters}

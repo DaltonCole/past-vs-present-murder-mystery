@@ -14,6 +14,7 @@ from pages.views import (
 app_name = 'pages'
 urlpatterns = [
     path('', home, name='home'),
+    path('clue', home, name='clue'),
     path('found_clues', found_clues, name='found-clues'),
     path('solution', solution, name='solution'),
     path('score', score, name='score'),
