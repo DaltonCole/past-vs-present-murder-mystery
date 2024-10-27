@@ -28,11 +28,10 @@
             "location": "c",
             "where": "Guest Bedroom - Clue is tapped to the bottom side of the closet shelf",
             "location_hint1": "A pretty good place to store a skeleton",
-            "location_hint2": "TODO",
-            "location_hint3": "TODO"
+            "location_hint2": "In-law jail",
+            "location_hint3": "The lion, the Witch, and the..."
         }
     },
-
     {
         "model": "location_clues.Location",
         "pk": 3,
@@ -106,7 +105,7 @@
             "location": "j",
             "where": "Underneath the rug in the living room",
             "location_hint1": "Where daughter and man's best friend becomes one",
-            "location_hint2": "Seven sides makes a circle (TODO: check fan blade count) but I don't need any blades",
+            "location_hint2": "Seven sides makes a circle, but I don't need any blades",
             "location_hint3": "What's blue and white and should really be bigger?"
         }
     },
@@ -151,7 +150,7 @@
             "where": "Fan switch in living room (small letter tapped to it)",
             "location_hint1": "Push me, and then just touch me, till I can get my satisfaction",
             "location_hint2": "You spin me right 'round, baby; Right 'round, like a record, baby; Right 'round, 'round, 'round",
-            "location_hint3": "<a href=\"https://www.youtube.com/watch?v=h6k9_IgBj8Q\">This video might help find this clue</a> TODO: make sure hyperlink works"
+            "location_hint3": "<a href=\"https://www.youtube.com/watch?v=h6k9_IgBj8Q\" target=\"_blank\">This video might help find this clue</a> TODO: make sure hyperlink works"
         }
     },
     {

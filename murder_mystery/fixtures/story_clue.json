@@ -1,23 +1,86 @@
 [
-    {
-        "model": "story_clues.StoryClue",
-        "pk": 0,
-        "fields": {
-            "clue": "test"
-        }
-    },
-    {
-        "model": "story_clues.StoryClue",
-        "pk": 1,
-        "fields": {
-            "clue": "test2"
-        }
-    },
-    {
-        "model": "story_clues.StoryClue",
-        "pk": 2,
-        "fields": {
-            "clue": "<a href=\"https://www.youtube.com/watch?v=dQw4w9WgXcQ\" target=\"_blank\">Video Vlog #1</a>"
-        }
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 0,
+    "fields": {
+      "clue": "Hey Guys and gals! This is my first vlog! Today I’m going to be showing off my giraffe collection… - <precedes to show off giraffe collection>"
     }
-]
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 1,
+    "fields": {
+      "clue": "Dear Diary, I decided to start going to the zoo more often! I’ve really enjoyed chillazing by my favorite exhibits, just watching the animals eat. Turns out I’m not the only one! I’ve started making other zoo-goer friends!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 2,
+    "fields": {
+      "clue": "Dear Diary, I hosted my first party with all of my new friends! We talked about all of our favorite things! Well, really only one thing, but we all had a super good time!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 3,
+    "fields": {
+      "clue": "Hey Guys and gals! It’s been a while! I even started a diary between my last vlog and now! I don’t know why I would mention that. Anyways, my new friends and I have decided to start holding weekly meetings! Each meeting is pretty repetitive, since we always talk about the same stuff, but it’s super fun every time! I’m currently the group’s leader, creating an agenda and leading every meeting. You all should join sometime! There’s free food at every meeting!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 4,
+    "fields": {
+      "clue": "Hey Guys and gals! I never thought I would stop being an atheist, but \"kult božské žirafy\" has really transformed my outlook on life! I really appreciate all of you joining! When my small group of friends started this, I never thought we would reach millions of believers! \"žirafy jsou lepší než všechno ostatní\"!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 5,
+    "fields": {
+      "clue": "Hey Guys and gals! The support has been amazing! We’ve been employing everyone’s tithes and contributions to a number of different projects. The temple construction in Namibia has been going smoothly and is almost completed. It will be the tallest building in the entire world once completed, as it should be. We’ve also started experiments on our deities to prove to the none believers! Rise above the rest!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 6,
+    "fields": {
+      "clue": "Dear Diary, The experiment was a success! We have successfully unlocked their potential! Simply by relocating their existing stem cells to their brain, their IQ is off the charts by human standards! It has only been 8 weeks since the surgery and they are already performing differential equations. I’ve always known that they were superior!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 7,
+    "fields": {
+      "clue": "Hey Guys and gals. Today, I want to celebrate just how much Our Beloved Ones do for us. They’re not just wise; they’re our foundation, our protectors, and our providers. Through their quiet strength, we’re nourished, guided, and lifted above life’s worries. They meet our needs almost effortlessly, as if they were born to care for us. Without them, truly, we’d be lost. It’s incredible to think how these majestic beings—so graceful, so attuned—have blessed us with all we could ever need."
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 8,
+    "fields": {
+      "clue": "They’ve done it! The chosen have discovered space travel! In only 3 short years, they went from magnificent and elegant creatures to magnificent and elegant creatures that can also reach space! Whomever said “sky’s the limit” clearly didn’t know who they were dealing with! Also, Hey guys and gals!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 9,
+    "fields": {
+      "clue": "Dear Diary, technology has been advancing at a staggering rate. Since the deities unlocked their full potential, we have blasted off 100 years into the future. World happiness and productivity is at an all time high and humans don’t even have to do a single thing. Praise to The Chosen ones!"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 10,
+    "fields": {
+      "clue": "Year 2189. They have abandoned us. We praised them and held them up like gods. Now they leave us to go back to simpler times. To the only pace that reminds them of their red dust covered land. The one place we cannot reach. Why? Why…?"
+    }
+  },
+  {
+    "model": "story_clues.StoryClue",
+    "pk": 11,
+    "fields": {
+      "clue": " In the fading echoes of our city, we leaned on silent guardians, their grace obscuring the craft of our hands. Paths once strong now whisper of neglect, leaving us to ponder: have we forgotten the alchemy of repair, or is it merely hidden beneath the shadows of towering forms?"
+    }
+  }
+ ]

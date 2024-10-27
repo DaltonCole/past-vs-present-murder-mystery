@@ -29,6 +29,8 @@ def team_to_clue_to_clue_context(team_to_clue: TeamToClue) -> Dict[str, str]:
                 'hint1': clue.location.location_hint1,
                 'hint2': clue.location.location_hint2 if team_to_clue.location_hints > 0 else '',
                 'hint3': clue.location.location_hint3 if team_to_clue.location_hints > 1 else '',
+                'hint2_cheat': clue.location.location_hint2,
+                'hint3_cheat': clue.location.location_hint3,
                 }
     else:
         clue = team_to_clue.character_clue
@@ -45,4 +47,6 @@ def team_to_clue_to_clue_context(team_to_clue: TeamToClue) -> Dict[str, str]:
                 'hint1': location_hint1,
                 'hint2': location_hint2 if team_to_clue.location_hints > 0 else '',
                 'hint3': location_hint3 if team_to_clue.location_hints > 1 else '',
+                'hint2_cheat': location_hint2,
+                'hint3_cheat': location_hint3,
                 }
