@@ -81,22 +81,20 @@ class CalculateTeamScoreTests(MakeTeams):
             expected_total_points = 0
 
             # Add incorrect clue guess
-            team_clues[0].tries += 1
-            team_clues[0].save()
+            TeamToClue.objects.filter(id=team_clues[0].id).update(tries=team_clues[0].tries + 1)
+            team_clues = get_team_clues_in_order(team)
             expected_total_points -= INCORRECT_GUESS_DEDUCTION
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             self.assertLess(points, 0)
             # Add incorrect clue guess
-            team_clues[1].tries += 1
-            team_clues[1].save()
+            TeamToClue.objects.filter(id=team_clues[1].id).update(tries=team_clues[1].tries + 1)
             expected_total_points -= INCORRECT_GUESS_DEDUCTION
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             self.assertLess(points, 0)
             # Add clue
-            team_clues[1].found = True
-            team_clues[1].save()
+            TeamToClue.objects.filter(id=team_clues[1].id).update(found=True)
             expected_total_points += POINTS_PER_CLUE
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
@@ -111,8 +109,7 @@ class CalculateTeamScoreTests(MakeTeams):
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             # Add clue
-            team_clues[2].found = True
-            team_clues[2].save()
+            TeamToClue.objects.filter(id=team_clues[2].id).update(found=True)
             expected_total_points += POINTS_PER_CLUE
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
@@ -127,26 +124,22 @@ class CalculateTeamScoreTests(MakeTeams):
             expected_total_points = 0
 
             # Add clue
-            team_clues[0].found = True
-            team_clues[0].save()
+            TeamToClue.objects.filter(id=team_clues[0].id).update(found=True)
             expected_total_points += POINTS_PER_CLUE
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             # Add incorrect clue guess
-            team_clues[1].tries += 1
-            team_clues[1].save()
+            TeamToClue.objects.filter(id=team_clues[1].id).update(tries=team_clues[1].tries + 1)
             expected_total_points -= INCORRECT_GUESS_DEDUCTION
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             # Add incorrect clue guess
-            team_clues[1].tries += 1
-            team_clues[1].save()
+            TeamToClue.objects.filter(id=team_clues[1].id).update(tries=team_clues[1].tries + 1)
             expected_total_points -= INCORRECT_GUESS_DEDUCTION
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             # Add clue
-            team_clues[1].found = True
-            team_clues[1].save()
+            TeamToClue.objects.filter(id=team_clues[1].id).update(found=True)
             expected_total_points += POINTS_PER_CLUE
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
@@ -161,8 +154,7 @@ class CalculateTeamScoreTests(MakeTeams):
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
             # Add clue
-            team_clues[2].found = True
-            team_clues[2].save()
+            TeamToClue.objects.filter(id=team_clues[2].id).update(found=True)
             expected_total_points += POINTS_PER_CLUE
             points, _ = calculate_team_score(team)
             self.assertEqual(points, expected_total_points)
