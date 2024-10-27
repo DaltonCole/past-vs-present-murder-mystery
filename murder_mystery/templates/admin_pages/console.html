@@ -1,9 +1,7 @@
 {% extends "base.html" %}
-<p>TEST</p>
-<p>Hi {{ user.username }}!</p>
+{% load static %}
 
 {% block title %}Admin Console{% endblock %}
-<p>TEst</p>
 
 {% block content %}
 <!-- Report action performed -->
@@ -21,6 +19,27 @@
     <button type="submit" name="action" value="start-game">Start Game</button>
 </form>
 <!-- END Perform Actions-->
+
+<!-- BEGIN Stats -->
+<ul class="nav nav-tabs">
+    {% for character, info in characters.items %}
+    {% with name=character.username.username %}
+    <li class="nav-item" role="presentation">
+        <button data-toggle="tab" href="#c-{{ name }}" class="nav-link" id="c-{{ name }}-tab" data-bs-toggle="tab" data-bs-target="#c-{{name}}" type="button" role="tab" aria-controls="c-{{name}}" aria-selected="false">{{ character.real_name }}</button>
+    </li>
+    {% endwith %}
+    {% endfor %}
+</ul>
+<div class="tab-content" id="myTabContent">
+    {% for character, info in characters.items %}
+    {% with name=character.username.username %}
+    <div class="tab-pane fade" id="c-{{name}}" role="tabpanel" aria-labelledby="c-{{name}}-tab">{{name}}</div>
+
+    {% endwith %}
+    {% endfor %}
+</div>
+
+<!-- END Stats -->
 
 <!-- BEGIN logout -->
 <form action="{% url 'logout' %}" method="post">

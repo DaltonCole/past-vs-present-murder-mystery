@@ -8,8 +8,13 @@ from admin_pages.scripts.make_unique_default_users_and_chars import (
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
 from bonus_points.models import TeamToBonusPoint
+from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
 from teams.models import Team, TeamToClue
+from teams.scripts.get_next_clue import get_next_clue
+from teams.scripts.get_solved_clues import get_solved_clues
+from teams.scripts.get_team import get_team
+from teams.scripts.get_team_clues_in_order import get_team_clues_in_order
 
 def action(request):
     '''Helper function for handling the "action" POST request'''
@@ -58,11 +63,27 @@ def action(request):
 
     return context
 
+def stats(request):
+    '''Get the stats of every player'''
+    characters = {}
+
+    for character in Character.objects.all().order_by('real_name'):
+        team = get_team(character)
+        clues = get_team_clues_in_order(team)
+        characters[character] = {
+                'team': team,
+                'clues': clues,
+                }
+
+    return {'characters': characters}
+
+
 # Create your views here.
 @staff_member_required
 def console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:console'
+    context = {**context, **stats(request)}
 
     return render(request, 'admin_pages/console.html', context)
 
@@ -71,5 +92,7 @@ def console(request):
 def test_console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:test-console'
+
+    context = {**context, **stats(request)}
 
     return render(request, 'admin_pages/test-console.html', context)
