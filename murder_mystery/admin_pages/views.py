@@ -7,7 +7,7 @@ from admin_pages.scripts.make_unique_default_users_and_chars import (
 )
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
-from bonus_points.models import TeamToBonusPoint
+from bonus_points.models import BonusPoint, TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
 from pages.scripts.calculate_team_score import calculate_team_score
@@ -87,7 +87,13 @@ def stats(request):
                 'story': found_story_clues,
                 }
 
-    return {'characters': characters}
+    bonus_points = BonusPoint.objects.exclude(id__in=[point.bonus_point.id for point in TeamToBonusPoint.objects.all()])
+    bonus_points_remaining = sum([point.amount for point in bonus_points])
+
+    return {'characters': characters,
+            'bonus_points': bonus_points,
+            'remaining_bonus_points': bonus_points_remaining,
+            }
 
 
 # Create your views here.
