@@ -111,8 +111,59 @@
                         <td>{{ clue.character_clue.story_clue.id }}</td>
                     {% endif %}
                 </tr>
-            </tbody>
             {% endfor %}
+            </tbody>
+        </table>
+        <!-- Score Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Points</th>
+                    <th scope="col">Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for point, reason in info.score %}
+                <tr>
+                    <td>{{ point }}</td>
+                    <td>{{ reason }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td><b>Total:</b></td>
+                    <td><b>{{ info.total_score }}</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Final Solution Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Final Solution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ info.solution }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Found Story Clues Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Clue #</th>
+                    <th scope="col">Clue</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for story_clue in info.story %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ story_clue.clue}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
     {% endwith %}

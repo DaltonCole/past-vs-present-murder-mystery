@@ -10,7 +10,10 @@ from admin_pages.tests.helpers import make_n_users_and_characters, save_all
 from bonus_points.models import TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
+from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
+from solutions.models import Solution
+from story_clues.models import StoryClue
 from teams.models import Team, TeamToClue
 from teams.scripts.get_next_clue import get_next_clue
 from teams.scripts.get_solved_clues import get_solved_clues
@@ -72,9 +75,16 @@ def stats(request):
         team = get_team(character)
         clues = get_team_clues_in_order(team)
         hints = [team_to_clue_to_clue_context(clue) for clue in clues]
+        total_score, score = calculate_team_score(team)
+        solution = Solution.objects.filter(team=team).first()
+        found_story_clues = [clue.location_clue.story_clue if clue.location_clue is not None else clue.character_clue.story_clue for clue in get_solved_clues(team)]
         characters[character] = {
                 'team': team,
                 'clues': zip(clues, hints),
+                'score': score,
+                'total_score': total_score,
+                'solution': solution.solution if solution else None,
+                'story': found_story_clues,
                 }
 
     return {'characters': characters}
