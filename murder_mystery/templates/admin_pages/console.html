@@ -177,15 +177,18 @@
         <tr>
             <th scope="col">Amount</th>
             <th scope="col">Reason</th>
-            <th scope="col">Answer</th>
         </tr>
     </thead>
     <tbody>
         {% for bonus_point in bonus_points %}
         <tr>
             <td>{{ bonus_point.amount }}</td>
-            <td>{{ bonus_point.reason }}</td>
-            <td>{{ bonus_point.answer }}</td>
+            <td>
+                <details>
+                    <summary>{{ bonus_point.reason }}</summary>
+                    {{ bonus_point.answer }}
+                </details>
+            </td>
         </tr>
         {% endfor %}
     </tbody>
