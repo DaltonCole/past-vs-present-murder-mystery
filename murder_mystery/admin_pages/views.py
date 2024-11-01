@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -7,6 +9,7 @@ from admin_pages.scripts.make_unique_default_users_and_chars import (
 )
 from admin_pages.scripts.start_game import start_game
 from admin_pages.tests.helpers import make_n_users_and_characters, save_all
+from bonus_points.forms import AdminBonusPointForm
 from bonus_points.models import BonusPoint, TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
@@ -96,12 +99,41 @@ def stats(request):
             }
 
 
+def handle_admin_bonus_point_form(request, context):
+    form = AdminBonusPointForm(
+            request.POST or None
+            )
+
+    if form.is_valid():
+        team = form.cleaned_data['team']
+        amount = form.cleaned_data['amount']
+        reason = form.cleaned_data['reason']
+        answer = str(uuid.uuid4())
+
+        # TODO: Add max amount check
+        bonus_point = BonusPoint(
+                amount=amount,
+                reason=reason,
+                answer=answer,
+                )
+        bonus_point.save()
+        team_to_bonus_point = TeamToBonusPoint(
+                team=team,
+                bonus_point=bonus_point,
+                )
+        team_to_bonus_point.save()
+        context['action'] = f'Assigned {team} {amount} bonus points for: {reason}'
+
+    return form
+
 # Create your views here.
 @staff_member_required
 def console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:console'
+
     context = {**context, **stats(request)}
+    context['admin_bonus_point_form'] = handle_admin_bonus_point_form(request, context)
 
     return render(request, 'admin_pages/console.html', context)
 
@@ -112,5 +144,6 @@ def test_console(request):
     context['reverse'] = 'admin-pages:test-console'
 
     context = {**context, **stats(request)}
+    context['admin_bonus_point_form'] = handle_admin_bonus_point_form(request, context)
 
     return render(request, 'admin_pages/test-console.html', context)

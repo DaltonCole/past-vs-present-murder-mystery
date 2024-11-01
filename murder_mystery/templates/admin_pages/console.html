@@ -194,6 +194,15 @@
 </table>
 <!-- END Stats -->
 
+<!-- BEGIN bonus point form -->
+<h6>Give Bonus Points To Team:</h6>
+<form method="post">
+    {% csrf_token %}
+    {{ admin_bonus_point_form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+<!-- END bonus point form -->
+
 <!-- BEGIN logout -->
 <form action="{% url 'logout' %}" method="post">
   {% csrf_token %}
