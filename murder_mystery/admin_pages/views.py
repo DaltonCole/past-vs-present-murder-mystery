@@ -90,7 +90,7 @@ def stats(request):
                 'story': found_story_clues,
                 }
 
-    bonus_points = BonusPoint.objects.all()
+    bonus_points = BonusPoint.objects.exclude(answer__startswith='uuid-')
     bonus_points_remaining = sum([point.amount for point in bonus_points])
 
     return {'characters': characters,
@@ -108,7 +108,7 @@ def handle_admin_bonus_point_form(request, context):
         team = form.cleaned_data['team']
         amount = form.cleaned_data['amount']
         reason = form.cleaned_data['reason']
-        answer = str(uuid.uuid4())
+        answer = 'uuid-' + str(uuid.uuid4())
 
         # TODO: Add max amount check
         bonus_point = BonusPoint(
