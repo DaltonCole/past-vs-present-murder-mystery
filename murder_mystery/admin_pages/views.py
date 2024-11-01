@@ -87,12 +87,12 @@ def stats(request):
                 'story': found_story_clues,
                 }
 
-    bonus_points = BonusPoint.objects.exclude(id__in=[point.bonus_point.id for point in TeamToBonusPoint.objects.all()])
+    bonus_points = BonusPoint.objects.all()
     bonus_points_remaining = sum([point.amount for point in bonus_points])
 
     return {'characters': characters,
             'bonus_points': bonus_points,
-            'remaining_bonus_points': bonus_points_remaining,
+            'total_bonus_points': bonus_points_remaining,
             }
 
 

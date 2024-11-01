@@ -16,22 +16,15 @@ def bonus_point_submission(request):
 
             if len(matching_bonus_points) != 0:
                 matching_bonus_points = matching_bonus_points[0]
+                char = Character.objects.get(username=request.user.id)
+                team = get_team(char)
 
-                if len(TeamToBonusPoint.objects.filter(bonus_point=matching_bonus_points)) != 0:
-                    return HttpResponse('Bonus Points Already Claimed By Someone!')
+                if len(TeamToBonusPoint.objects.filter(bonus_point=matching_bonus_points, team=team)) != 0:
+                    return HttpResponse('Bonus Points Already Claimed!')
                 else:
-                    char = Character.objects.get(username=request.user.id)
-                    team = get_team(char)
                     team_to_bonus = TeamToBonusPoint(team=team, bonus_point=matching_bonus_points)
                     team_to_bonus.save()
                     return HttpResponse(f'<p style="color:green;">You\'ve been awareded {matching_bonus_points.amount} bonus point(s)!</p>')
 
 
     return HttpResponse('<p style="color:red;">WRONG!</p>')
-
-def bonus_points_remaining(request):
-    bonus_points = BonusPoint.objects.exclude(id__in=[point.bonus_point.id for point in TeamToBonusPoint.objects.all()])
-
-    remaining_points = sum([point.amount for point in bonus_points])
-
-    return HttpResponse(f'There are {len(bonus_points)} hidden clues totaling {remaining_points} points remaining!')
