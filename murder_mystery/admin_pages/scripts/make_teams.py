@@ -1,11 +1,14 @@
-from typing import Dict
 from itertools import chain
 import logging
+from typing import Dict
 
 from django.contrib.auth.models import User
 
 from characters.models import Character
-from characters.scripts.character_queries import characters_on_a_team, characters_not_on_a_team
+from characters.scripts.character_queries import (
+    characters_not_on_a_team,
+    characters_on_a_team,
+)
 from teams.models import Team
 
 logger = logging.getLogger(__name__)
@@ -119,7 +122,9 @@ def __make_preferred_partner_teams(teams_created: Dict[str, int]) -> Dict[str, i
 
     for character in chars_with_prefered_partners:
         if character not in characters_added_to_a_team:
-            preferred_partner_character = Character.objects.get(username=character.preferred_partner)
+            preferred_partner_character = Character.objects.filter(username=character.preferred_partner).first()
+            if not preferred_partner_character:
+                return teams_created
 
             # We already know that character.preferred_partner == preferred_partner_character.username,
             # now we need to check the reverse
