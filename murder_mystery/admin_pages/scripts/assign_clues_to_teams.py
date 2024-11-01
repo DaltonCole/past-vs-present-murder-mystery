@@ -67,6 +67,9 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
         shuffle(location_clues)
         shuffle(character_options)
 
+        # Max character clues to 3
+        character_options = character_options[:3]
+
         for i, clue in enumerate(clues):
             # Order for this clue
             next_order = 1 + len(TeamToClue.objects.filter(team=team))
