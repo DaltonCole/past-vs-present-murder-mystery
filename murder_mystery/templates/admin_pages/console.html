@@ -111,14 +111,88 @@
                         <td>{{ clue.character_clue.story_clue.id }}</td>
                     {% endif %}
                 </tr>
-            </tbody>
             {% endfor %}
+            </tbody>
+        </table>
+        <!-- Score Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Points</th>
+                    <th scope="col">Reason</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for point, reason in info.score %}
+                <tr>
+                    <td>{{ point }}</td>
+                    <td>{{ reason }}</td>
+                </tr>
+            {% endfor %}
+                <tr>
+                    <td><b>Total:</b></td>
+                    <td><b>{{ info.total_score }}</b></td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Final Solution Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Final Solution</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ info.solution }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- Found Story Clues Info -->
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Clue #</th>
+                    <th scope="col">Clue</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for story_clue in info.story %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ story_clue.clue}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
     {% endwith %}
     {% endfor %}
 </div>
 
+<h6>Bonus Points</h6>
+<p>There are {{ bonus_points|length }} hidden clues totaling {{ remaining_bonus_points }} points remaining!</p>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Amount</th>
+            <th scope="col">Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for bonus_point in bonus_points %}
+        <tr>
+            <td>{{ bonus_point.amount }}</td>
+            <td>
+                <details>
+                    <summary>{{ bonus_point.reason }}</summary>
+                    {{ bonus_point.answer }}
+                </details>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 <!-- END Stats -->
 
 <!-- BEGIN logout -->

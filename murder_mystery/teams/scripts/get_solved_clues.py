@@ -8,6 +8,4 @@ logger = logging.getLogger(__name__)
 
 def get_solved_clues(team: Team) -> List[TeamToClue]:
     '''Get the clues this team has already solved'''
-    team_clues = get_team_clues_in_order(team)
-    team_clues = list(filter(lambda team_clue: team_clue.found == True, team_clues))
-    return team_clues
+    return list(TeamToClue.objects.filter(team=team, found=True).order_by('order'))
