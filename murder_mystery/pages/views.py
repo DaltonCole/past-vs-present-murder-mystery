@@ -141,6 +141,18 @@ def solution(request):
 def score(request):
     context = {}
 
+    character = Character.objects.get(username=request.user.id)
+    team = get_team(character)
+
+    past_char = team.past_character
+    future_char = team.future_character
+    if past_char is not None and future_char is not None:
+        context['team'] = f'{past_char.real_name} (Past) and {future_char.real_name} (Future)'
+    if past_char is not None:
+        context['team'] = f'{past_char.real_name} (Past)'
+    if future_char is not None:
+        context['team'] = f'{future_char.real_name} (Future)'
+
     return render(request, 'pages/score.html', context)
 
 
