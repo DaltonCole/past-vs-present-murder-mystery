@@ -1,9 +1,9 @@
-from django.shortcuts import render, reverse, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.shortcuts import redirect, render, reverse
 
-from teams.models import Team
 from admin_pages.scripts.start_game import start_game
+from teams.models import Team
 
 from .forms import CharacterForm
 from .models import Character
