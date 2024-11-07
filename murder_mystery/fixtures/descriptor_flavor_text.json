@@ -10,14 +10,63 @@
         "model": "character_clues.DescriptorFlavorText",
         "pk": 1,
         "fields": {
-            "flavor_text": "They're a {description} good fellow!"
+            "flavor_text": "I bet you wish you were this {description}"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 2,
         "fields": {
-            "flavor_text": "They're a {description} good fellow!"
+            "flavor_text": "If only someone with this {description} was right in front of you!"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 3,
+        "fields": {
+            "flavor_text": "{description}, {description}, {description}!"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 4,
+        "fields": {
+            "flavor_text": "Tall, dark, and {description}!"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 5,
+        "fields": {
+            "flavor_text": "You know who! It's the {description}"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 6,
+        "fields": {
+            "flavor_text": "{description}"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 7,
+        "fields": {
+            "flavor_text": "When I grow up, I want to be {description}"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 8,
+        "fields": {
+            "flavor_text": "Find the {description}"
+        }
+    },
+    {
+        "model": "character_clues.DescriptorFlavorText",
+        "pk": 9,
+        "fields": {
+            "flavor_text": "They are a {description} person in a hay stack."
         }
     }
 ]

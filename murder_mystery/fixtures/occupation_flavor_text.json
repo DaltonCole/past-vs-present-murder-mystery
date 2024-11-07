@@ -1,9 +1,63 @@
 [
     {
         "model": "character_clues.OccupationFlavorText",
-        "pk": 1,
+        "pk": 0,
         "fields": {
             "flavor_text": "A charming {occupation} holds the riddle to the {char.past_or_future}"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 1,
+        "fields": {
+            "flavor_text": "It's a {occupation}-al hazard."
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 2,
+        "fields": {
+            "flavor_text": "Someone with this {occupation} occupation holds the secret to your next clue."
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 3,
+        "fields": {
+            "flavor_text": "{occupation}"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 4,
+        "fields": {
+            "flavor_text": "Even monkeys could be a {occupation}"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 5,
+        "fields": {
+            "flavor_text": "Imagine being a {occupation}, because if you were, you'd have this clue already!"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 6,
+        "fields": {
+            "flavor_text": "They work had as an {occupation}"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 7,
+        "fields": {
+            "flavor_text": "{occupation} this, {occupation} that, I wish they never became a {occupation}!"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 8,
+        "fields": {
+            "flavor_text": "If you were were a {occupation}, all of your dreams would come true!"
+        }
+    },{
+        "model": "character_clues.OccupationFlavorText",
+        "pk": 9,
+        "fields": {
+            "flavor_text": "When I grow up, I want to be a {occupation}, just like my hero!"
         }
     }
 ]
