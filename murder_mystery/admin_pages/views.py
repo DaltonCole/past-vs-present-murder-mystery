@@ -110,7 +110,11 @@ def handle_admin_bonus_point_form(request, context):
         reason = form.cleaned_data['reason']
         answer = 'uuid-' + str(uuid.uuid4())
 
-        # TODO: Add max amount check
+        max_points = 500
+        if amount > max_points:
+            context['action'] = f'Too many bonus points trying to be awarded. {amount} > {max_points}'
+            return form
+
         bonus_point = BonusPoint(
                 amount=amount,
                 reason=reason,
