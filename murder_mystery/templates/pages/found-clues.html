@@ -14,10 +14,10 @@
             <th scope="col">Clue</th>
         </tr>
     </thead>
-    <tbody id="found-clues" hx-get"/found_clues" hx-trigger="every 2s" hx-target="#found-clues">
+    <tbody id="found-clues" hx-get"/found_clues" hx-trigger="load" hx-target="#found-clues">
     </tbody>
 </table>
 
-<button class="btn btn-primary" hx-get="/found_clues_htmx" hx-trigger="load, every 2s" hx-target="#found-clues" style="display: none;">TEST</button>
+<button class="btn btn-primary" hx-get="/found_clues_htmx" hx-trigger="load" hx-target="#found-clues" style="display: none;">TEST</button>
 
 {% endblock %}
