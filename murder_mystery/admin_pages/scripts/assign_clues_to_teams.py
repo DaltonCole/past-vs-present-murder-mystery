@@ -93,7 +93,6 @@ def assign_clues_to_teams() -> Dict[Team, List[TeamToClue]]:
                 clues_to_team[team] = []
             clues_to_team[team].append(team_to_clue)
 
-    # TODO: Add option to skip character clues
     # Add bonus screen when team finishes all clues and final solution allowing them to solve remaining location clues
     return clues_to_team
 

@@ -92,6 +92,7 @@
                     <th scope="col">Hint 1</th>
                     <th scope="col">Hint 2</th>
                     <th scope="col">Hint 3</th>
+                    <th scope="col">Answer</th>
                     <th scope="col">Story Clue</th>
                 </tr>
             </thead>
@@ -106,8 +107,10 @@
                     <td>{{ hint.hint2_cheat }}</td>
                     <td>{{ hint.hint3_cheat }}</td>
                     {% if clue.location_clue %}
+                        <td>{{ clue.location_clue.location.location }}</td>
                         <td>{{ clue.location_clue.story_clue.id }}</td>
                     {% else %}
+                        <td>{{ clue.character_clue.character_id.real_name }}</td>
                         <td>{{ clue.character_clue.story_clue.id }}</td>
                     {% endif %}
                 </tr>

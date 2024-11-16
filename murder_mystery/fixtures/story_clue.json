@@ -3,7 +3,7 @@
     "model": "story_clues.StoryClue",
     "pk": 0,
     "fields": {
-      "clue": "Hey Guys and gals! This is my first vlog! Today I’m going to be showing off my giraffe collection… - <precedes to show off giraffe collection>"
+      "clue": "<a href=\"https://youtu.be/h14zFLCPhRU\" target=\"_blank\">Hey Guys and gals! This is my first vlog! Today I’m going to be showing off my giraffe collection… - [precedes to show off giraffe collection]</a>"
     }
   },
   {

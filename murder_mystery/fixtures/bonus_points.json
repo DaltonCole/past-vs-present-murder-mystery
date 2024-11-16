@@ -3,7 +3,7 @@
         "model": "bonus_points.BonusPoint",
         "pk": 0,
         "fields": {
-            "amount": 50,
+            "amount": 60,
             "reason": "For capturing that horrible Giraffe!",
             "answer": "jrucyy"
         }
@@ -39,9 +39,126 @@
         "model": "bonus_points.BonusPoint",
         "pk": 4,
         "fields": {
+            "amount": 50,
+            "reason": "For capturing that terrifying Lion!",
+            "answer": "qopeol"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 5,
+        "fields": {
             "amount": 10,
             "reason": "For Knowing Daltie's favorite animal!",
             "answer": "giraffe"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 6,
+        "fields": {
+            "amount": 25,
+            "reason": "The book of the Divine",
+            "answer": "abcdfg"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 7,
+        "fields": {
+            "amount": 30,
+            "reason": "Finding the split points",
+            "answer": "cdmnnt"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 8,
+        "fields": {
+            "amount": 20,
+            "reason": "Rocket Points!",
+            "answer": "fbstmp"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 9,
+        "fields": {
+            "amount": 25,
+            "reason": "Planetary Points",
+            "answer": "stomptk"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 10,
+        "fields": {
+            "amount": 20,
+            "reason": "Scattered Points",
+            "answer": "rkznwo"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 11,
+        "fields": {
+            "amount": 20,
+            "reason": "YouTube Points",
+            "answer": "qerepw"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 12,
+        "fields": {
+            "amount": 25,
+            "reason": "You found The Blind Giraffe!",
+            "answer": "bdmhdw"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 13,
+        "fields": {
+            "amount": 25,
+            "reason": "You found The Drowning Giraffe!",
+            "answer": "gcsctd"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 14,
+        "fields": {
+            "amount": 20,
+            "reason": "The Red Planet!",
+            "answer": "mars"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 15,
+        "fields": {
+            "amount": 40,
+            "reason": "The narrator",
+            "answer": "dalton"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 16,
+        "fields": {
+            "amount": 15,
+            "reason": "The points under the duck.",
+            "answer": "wtdepz"
+        }
+    },
+    {
+        "model": "bonus_points.BonusPoint",
+        "pk": 17,
+        "fields": {
+            "amount": 17,
+            "reason": "You gave the boss a compliment on his pocket watch",
+            "answer": "pocket"
         }
     }
 ]

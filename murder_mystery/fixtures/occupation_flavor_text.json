@@ -51,7 +51,7 @@
         "model": "character_clues.OccupationFlavorText",
         "pk": 8,
         "fields": {
-            "flavor_text": "If you were were a {occupation}, all of your dreams would come true!"
+            "flavor_text": "If you were a {occupation}, all of your dreams would come true!"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
