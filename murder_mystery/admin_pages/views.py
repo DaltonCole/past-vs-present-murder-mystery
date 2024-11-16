@@ -1,9 +1,5 @@
 import uuid
 
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth.models import User
-from django.shortcuts import render
-
 from admin_pages.scripts.make_unique_default_users_and_chars import (
     make_unique_default_users_and_chars,
 )
@@ -13,6 +9,9 @@ from bonus_points.forms import AdminBonusPointForm
 from bonus_points.models import BonusPoint, TeamToBonusPoint
 from bonus_points.scripts.get_team_bonus_points import get_team_bonus_points
 from characters.models import Character
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.models import User
+from django.shortcuts import render
 from pages.scripts.calculate_team_score import calculate_team_score
 from pages.scripts.team_to_clue_to_clue_context import team_to_clue_to_clue_context
 from solutions.models import Solution
@@ -90,7 +89,7 @@ def stats(request):
                 'story': found_story_clues,
                 }
 
-    bonus_points = BonusPoint.objects.exclude(answer__startswith='uuid-')
+    bonus_points = BonusPoint.objects.exclude(answer__startswith='uuid-').order_by('-amount')
     bonus_points_remaining = sum([point.amount for point in bonus_points])
 
     return {'characters': characters,
@@ -141,8 +140,7 @@ def console(request):
 
     return render(request, 'admin_pages/console.html', context)
 
-# TODO: Uncomment
-#@staff_member_required
+@staff_member_required
 def test_console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:test-console'

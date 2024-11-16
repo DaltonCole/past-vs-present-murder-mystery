@@ -111,7 +111,7 @@
         "model": "bonus_points.BonusPoint",
         "pk": 12,
         "fields": {
-            "amount": 25,
+            "amount": 30,
             "reason": "You found The Blind Giraffe!",
             "answer": "bdmhdw"
         }
@@ -138,7 +138,7 @@
         "model": "bonus_points.BonusPoint",
         "pk": 15,
         "fields": {
-            "amount": 40,
+            "amount": 15,
             "reason": "The narrator",
             "answer": "dalton"
         }
@@ -156,7 +156,7 @@
         "model": "bonus_points.BonusPoint",
         "pk": 17,
         "fields": {
-            "amount": 17,
+            "amount": 20,
             "reason": "You gave the boss a compliment on his pocket watch",
             "answer": "pocket"
         }

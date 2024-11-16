@@ -3,70 +3,70 @@
         "model": "character_clues.DescriptorFlavorText",
         "pk": 0,
         "fields": {
-            "flavor_text": "They're a {description} good fellow!"
+            "flavor_text": "They're a <b>{description}</b> good fellow!"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 1,
         "fields": {
-            "flavor_text": "I bet you wish you were this {description}"
+            "flavor_text": "I bet you wish you were this <b>{description}</b>"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 2,
         "fields": {
-            "flavor_text": "If only someone with this {description} was right in front of you!"
+            "flavor_text": "If only someone with this <b>{description}</b> was right in front of you!"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 3,
         "fields": {
-            "flavor_text": "{description}, {description}, {description}!"
+            "flavor_text": "<b>{description}</b>, <b>{description}</b>, <b>{description}</b>!"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 4,
         "fields": {
-            "flavor_text": "Tall, dark, and {description}!"
+            "flavor_text": "Tall, dark, and <b>{description}</b>!"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 5,
         "fields": {
-            "flavor_text": "You know who! It's the {description}"
+            "flavor_text": "You know who! It's the <b>{description}</b>"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 6,
         "fields": {
-            "flavor_text": "{description}"
+            "flavor_text": "<b>{description}</b>"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 7,
         "fields": {
-            "flavor_text": "When I grow up, I want to be {description}"
+            "flavor_text": "When I grow up, I want to be <b>{description}</b>"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 8,
         "fields": {
-            "flavor_text": "Find the {description}"
+            "flavor_text": "Find the <b>{description}</b>"
         }
     },
     {
         "model": "character_clues.DescriptorFlavorText",
         "pk": 9,
         "fields": {
-            "flavor_text": "They are a {description} person in a hay stack."
+            "flavor_text": "They are a <b>{description}</b> person in a hay stack."
         }
     }
 ]

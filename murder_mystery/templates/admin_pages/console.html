@@ -94,6 +94,7 @@
                     <th scope="col">Hint 3</th>
                     <th scope="col">Answer</th>
                     <th scope="col">Story Clue</th>
+                    <th scope="col">Clue ID</th>
                 </tr>
             </thead>
             <tbody>
@@ -103,9 +104,9 @@
                     <td>{{ clue.found }}</td>
                     <td>{{ clue.location_hints }}</td>
                     <td>{{ clue.tries }}</td>
-                    <td>{{ hint.hint1 }}</td>
-                    <td>{{ hint.hint2_cheat }}</td>
-                    <td>{{ hint.hint3_cheat }}</td>
+                    <td>{{ hint.hint1 | safe }}</td>
+                    <td>{{ hint.hint2_cheat | safe }}</td>
+                    <td>{{ hint.hint3_cheat | safe }}</td>
                     {% if clue.location_clue %}
                         <td>{{ clue.location_clue.location.location }}</td>
                         <td>{{ clue.location_clue.story_clue.id }}</td>
@@ -113,6 +114,7 @@
                         <td>{{ clue.character_clue.character_id.real_name }}</td>
                         <td>{{ clue.character_clue.story_clue.id }}</td>
                     {% endif %}
+                    <td>{{ clue.id }}</td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -163,7 +165,7 @@
             {% for story_clue in info.story %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ story_clue.clue}}</td>
+                    <td>{{ story_clue.clue | safe }}</td>
                 </tr>
             {% endfor %}
             </tbody>

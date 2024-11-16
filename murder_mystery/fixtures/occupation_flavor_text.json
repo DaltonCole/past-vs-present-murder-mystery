@@ -3,61 +3,61 @@
         "model": "character_clues.OccupationFlavorText",
         "pk": 0,
         "fields": {
-            "flavor_text": "A charming {occupation} holds the riddle to the {char.past_or_future}"
+            "flavor_text": "A charming <b>{occupation}</b> holds the riddle to the {char.past_or_future}"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 1,
         "fields": {
-            "flavor_text": "It's a {occupation}-al hazard."
+            "flavor_text": "It's a <b>{occupation}</b>-al hazard."
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 2,
         "fields": {
-            "flavor_text": "Someone with this {occupation} occupation holds the secret to your next clue."
+            "flavor_text": "Someone with this <b>{occupation}</b> occupation holds the secret to your next clue."
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 3,
         "fields": {
-            "flavor_text": "{occupation}"
+            "flavor_text": "<b>{occupation}</b>"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 4,
         "fields": {
-            "flavor_text": "Even monkeys could be a {occupation}"
+            "flavor_text": "Even monkeys could be a <b>{occupation}</b>"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 5,
         "fields": {
-            "flavor_text": "Imagine being a {occupation}, because if you were, you'd have this clue already!"
+            "flavor_text": "Imagine being a <b>{occupation}</b>, because if you were, you'd have this clue already!"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 6,
         "fields": {
-            "flavor_text": "They work had as an {occupation}"
+            "flavor_text": "They work had as an <b>{occupation}</b>"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 7,
         "fields": {
-            "flavor_text": "{occupation} this, {occupation} that, I wish they never became a {occupation}!"
+            "flavor_text": "<b>{occupation}</b> this, <b>{occupation}</b> that, I wish they never became a <b>{occupation}</b>!"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 8,
         "fields": {
-            "flavor_text": "If you were a {occupation}, all of your dreams would come true!"
+            "flavor_text": "If you were a <b>{occupation}</b>, all of your dreams would come true!"
         }
     },{
         "model": "character_clues.OccupationFlavorText",
         "pk": 9,
         "fields": {
-            "flavor_text": "When I grow up, I want to be a {occupation}, just like my hero!"
+            "flavor_text": "When I grow up, I want to be a <b>{occupation}</b>, just like my hero!"
         }
     }
 ]

@@ -1,12 +1,11 @@
-from typing import Dict, List, Union
 import logging
+from typing import Dict, List, Union
 
-from teams.models import Team, TeamToClue
 from admin_pages.scripts.assign_clues_to_teams import assign_clues_to_teams
 from admin_pages.scripts.make_teams import make_teams
+from teams.models import Team, TeamToClue
 
 logger = logging.getLogger(__name__)
-# TODO: This should work even if it is called multiple times
 def start_game() -> Dict[str, Union[Dict[str, int], Dict[Team, List[TeamToClue]]]]:
     '''Start the game
 
@@ -41,4 +40,3 @@ def start_game() -> Dict[str, Union[Dict[str, int], Dict[Team, List[TeamToClue]]
 # End the game, do not allow any changes to the Database
 def end_game():
     pass
-
