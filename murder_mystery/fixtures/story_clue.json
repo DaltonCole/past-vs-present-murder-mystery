@@ -10,7 +10,7 @@
     "model": "story_clues.StoryClue",
     "pk": 1,
     "fields": {
-      "clue": "Dear Diary, I decided to start going to the zoo more often! I’ve really enjoyed chillazing by my favorite exhibits, just watching the animals eat. Turns out I’m not the only one! I’ve started making other zoo-goer friends! I even hosted my first party with all of my new friends! We talked about all of our favorite things! Well, really only one thing, but we all had a super good time!"
+      "clue": "Dear Diary, I decided to start going to the zoo more often! I’ve really enjoyed chillaxing by my favorite exhibits, just watching the animals eat. Turns out I’m not the only one! I’ve started making other zoo-goer friends! I even hosted my first party with all of my new friends! We talked about all of our favorite things! Well, really only one thing, but we all had a super good time!"
     }
   },
   {

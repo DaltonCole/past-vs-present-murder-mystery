@@ -97,6 +97,18 @@ def stats(request):
             'total_bonus_points': bonus_points_remaining,
             }
 
+def score_board():
+    teams = Team.objects.all()
+    both = []
+
+    for team in teams:
+        score, reason = calculate_team_score(team)
+        both.append((team, score, reason))
+
+    both.sort(key=lambda x: -x[1])
+
+    return {'score_board': both}
+
 
 def handle_admin_bonus_point_form(request, context):
     form = AdminBonusPointForm(
@@ -135,7 +147,7 @@ def console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:console'
 
-    context = {**context, **stats(request)}
+    context = {**context, **stats(request), **score_board()}
     context['admin_bonus_point_form'] = handle_admin_bonus_point_form(request, context)
 
     return render(request, 'admin_pages/console.html', context)
@@ -145,7 +157,7 @@ def test_console(request):
     context = action(request)
     context['reverse'] = 'admin-pages:test-console'
 
-    context = {**context, **stats(request)}
+    context = {**context, **stats(request), **score_board()}
     context['admin_bonus_point_form'] = handle_admin_bonus_point_form(request, context)
 
     return render(request, 'admin_pages/test-console.html', context)

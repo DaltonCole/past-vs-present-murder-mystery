@@ -175,6 +175,46 @@
     {% endfor %}
 </div>
 
+<h6>Score Board</h6>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Team</th>
+            <th scope="col">Points</th>
+            <th scope="col">Reason</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for team, score, reasons in score_board %}
+        <tr>
+            <td>{{ team }}</td>
+            <td>{{ score }}</td>
+            <td>
+                <details>
+                    <summary>Details</summary>
+                    <table class="table table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Points</th>
+                            <th scope="col">Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for point, reason in reasons %}
+                        <tr>
+                            <td>{{ point }}</td>
+                            <td>{{ reason }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </details>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 <h6>Bonus Points</h6>
 <table class="table table-striped">
     <thead class="thead-dark">
