@@ -1,7 +1,6 @@
-from django.db import models
-
 from character_clues.models import CharacterClue
 from characters.models import Character
+from django.db import models
 from location_clues.models import LocationClue
 
 # Create your models here.
@@ -22,7 +21,7 @@ class Team(models.Model):
     )
 
     def __str__(self):
-        return f'Team({self.past_character.username.username if self.past_character else None}, {self.future_character.username.username if self.future_character else None})'
+        return f'Team({self.past_character.real_name if self.past_character else None}, {self.future_character.real_name if self.future_character else None})'
 
 class TeamToClue(models.Model):
     team = models.ForeignKey(
