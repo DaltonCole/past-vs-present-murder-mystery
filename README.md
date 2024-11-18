@@ -1,24 +1,9 @@
 # past-vs-present-murder-mystery
 
+Murder Mystery with a complete story!
+
 ## Run
 
-`docker-compose up --build`
-
-## Django
-
-* To make a new app: `python manage.py startapp <app>`
-    * Note: App name should be plural while table names are singular
-
-* When the schema for the database changes the following commands must be ran:
-    1) To create the code to perform the migration: `python manage.py makemigrations`
-    2) To actually update the database: `python manage.py migrate`
-
-## Docker
-
-* Restart a single container (ex backend): `docker-compose restart backend`
-
-### Trouble-shooting
-
-* If you run into a "Error response from daemon: network * not found" error try: `docker-compose up --force-recreate`
-* If you run into "no such table:" during make migrations, try: `python manage.py migrate --run-syncdb`
-* If you get something like "django.db.utils.ProgrammingError: relation "characters_character" does not exist" while creating a new database, in the root `urls.py` do `urlpatterns = []`
+1) Update the `.env*` files
+2) `docker compose -f compose.prod.yaml up --build`
+3) When you are done, run: `docker compose -f compose.prod.yaml down <-v if you want to clear the database>`
